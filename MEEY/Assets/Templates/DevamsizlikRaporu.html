@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Devamsızlık Raporu</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 10px;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            background: white;
+            box-sizing: border-box;
+            border: none;
+        }
+
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 5mm;
+            }
+
+            body {
+                margin: 0;
+                padding: 0;
+                box-shadow: none;
+                border: none;
+            }
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-bold {
+            font-weight: bold;
+        }
+
+        .border {
+            border: 1px solid #000;
+            padding: 5px;
+        }
+
+        .mb-2 {
+            margin-bottom: 5px;
+        }
+
+        .header-title {
+            border: 1px solid #000;
+            padding: 5px;
+            font-size: 11px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            table-layout: fixed;
+            border-collapse: collapse;
+            margin-bottom: 5px;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid #000;
+        }
+
+        th,
+        td {
+            padding: 2px;
+            word-wrap: break-word;
+        }
+
+        .table-isletme th {
+            font-weight: bold;
+            font-size: 11px;
+        }
+
+        .table-isletme td {
+            font-size: 11px;
+        }
+
+        .table-gunler th,
+        .table-gunler td {
+            text-align: center;
+            font-size: 10px;
+            padding: 2px;
+        }
+
+        .table-gunler .dikey {
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            height: 50px;
+            white-space: nowrap;
+        }
+
+        .table-gunler th.dikey {
+            padding: 4px 0;
+        }
+
+        .gun-num {
+            width: 20px;
+        }
+
+        .col-isim {
+            width: 90px;
+        }
+
+        .col-no {
+            width: 35px;
+        }
+
+        .col-alan {
+            width: 70px;
+        }
+
+        .col-tur {
+            width: 15px;
+        }
+
+        .col-toplam {
+            width: 25px;
+        }
+
+        .footer-grid {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
+        }
+
+        .footer-box {
+            border: 1px solid #000;
+            width: 32%;
+            text-align: center;
+            padding: 3px;
+            min-height: 70px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            font-size: 9px;
+        }
+
+        .semboller {
+            text-align: left;
+            font-size: 8px;
+        }
+
+        .dipnot {
+            font-size: 8px;
+            border: 1px solid #000;
+            padding: 3px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header-title mb-2">
+        MİLLİ EĞİTİM BAKANLIĞI<br>
+        ÖĞRENCİLERİNİN İŞLETMELERDE MESLEK EĞİTİMİ AYLIK DEVAM - DEVAMSIZLIK BİLDİRİM ÇİZELGESİ
+    </div>
+
+    <table class="table-isletme text-center">
+        <tr>
+            <th>İŞLETME ADI</th>
+            <th>İŞLETME TEL.</th>
+            <th>İŞLETME E-POSTA</th>
+            <th>Ait Olduğu Ay</th>
+            <th>Belgenin Düzenlendiği Tarih:</th>
+        </tr>
+        <tr>
+            <td>İşletme Adı Buraya</td>
+            <td>0212 000 0000</td>
+            <td>info@isletme.com</td>
+            <td>Eylül 2026</td>
+            <td>30.09.2026</td>
+        </tr>
+    </table>
+
+    <table class="table-gunler">
+        <tr>
+            <th colspan="4">ÖĞRENCİNİN</th>
+            <th colspan="31">GÜNLER (1-31)</th>
+            <th colspan="2">Toplam Devamsızlık</th>
+        </tr>
+        <tr>
+            <th class="col-isim dikey">ADI SOYADI</th>
+            <th class="col-no dikey">OKUL NO</th>
+            <th class="col-alan dikey">ALAN DAL</th>
+            <th class="col-tur dikey">GÜNLER</th>
+            <th class="gun-num dikey">1 Pzt</th>
+            <th class="gun-num dikey">2 Sal</th>
+            <th class="gun-num dikey">3 Çar</th>
+            <th class="gun-num dikey">4 Per</th>
+            <th class="gun-num dikey">5 Cum</th>
+            <th class="gun-num dikey" style="background:#eee;">6 Cts</th>
+            <th class="gun-num dikey" style="background:#eee;">7 Paz</th>
+            <th class="gun-num dikey">8 Pzt</th>
+            <th class="gun-num dikey">9 Sal</th>
+            <th class="gun-num dikey">10 Çar</th>
+            <th class="gun-num dikey">11 Per</th>
+            <th class="gun-num dikey">12 Cum</th>
+            <th class="gun-num dikey" style="background:#eee;">13 Cts</th>
+            <th class="gun-num dikey" style="background:#eee;">14 Paz</th>
+            <th class="gun-num dikey">15 Pzt</th>
+            <th class="gun-num dikey">16 Sal</th>
+            <th class="gun-num dikey">17 Çar</th>
+            <th class="gun-num dikey">18 Per</th>
+            <th class="gun-num dikey">19 Cum</th>
+            <th class="gun-num dikey" style="background:#eee;">20 Cts</th>
+            <th class="gun-num dikey" style="background:#eee;">21 Paz</th>
+            <th class="gun-num dikey">22 Pzt</th>
+            <th class="gun-num dikey">23 Sal</th>
+            <th class="gun-num dikey">24 Çar</th>
+            <th class="gun-num dikey">25 Per</th>
+            <th class="gun-num dikey">26 Cum</th>
+            <th class="gun-num dikey" style="background:#eee;">27 Cts</th>
+            <th class="gun-num dikey" style="background:#eee;">28 Paz</th>
+            <th class="gun-num dikey">29 Pzt</th>
+            <th class="gun-num dikey">30 Sal</th>
+            <th class="gun-num dikey">31 Çar</th>
+            <th class="col-toplam dikey">ÖZÜRLÜ</th>
+            <th class="col-toplam dikey">ÖZÜRSÜZ</th>
+        </tr>
+        </thead>
+        <tbody>
+            <!-- Öğrenci 1 -->
+            <tr>
+                <td rowspan="2" style="text-align:left;">Ahmet Yılmaz</td>
+                <td rowspan="2">101</td>
+                <td rowspan="2" style="text-align:left;">Bilişim Web</td>
+                <td class="text-bold">S</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td style="background:#eee;"></td>
+                <td style="background:#eee;"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td style="background:#eee;"></td>
+                <td style="background:#eee;"></td>
+                <td></td>
+                <td></td>
+                <td>X</td>
+                <td>X</td>
+                <td></td>
+                <td style="background:#eee;"></td>
+                <td style="background:#eee;"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td style="background:#eee;"></td>
+                <td style="background:#eee;"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td rowspan="2" class="text-bold">0</td>
+                <td rowspan="2" class="text-bold">0</td>
+            </tr>
+            <tr>
+                <td class="text-bold">Ö</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td style="background:#eee;"></td>
+                <td style="background:#eee;"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td style="background:#eee;"></td>
+                <td style="background:#eee;"></td>
+                <td></td>
+                <td></td>
+                <td>X</td>
+                <td>X</td>
+                <td></td>
+                <td style="background:#eee;"></td>
+                <td style="background:#eee;"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td style="background:#eee;"></td>
+                <td style="background:#eee;"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <!-- Öğrenci 2 -->
+            <tr>
+                <td rowspan="2" style="text-align:left;">Ayşe Demir</td>
+                <td rowspan="2">102</td>
+                <td rowspan="2" style="text-align:left;">Elektrik</td>
+                <td class="text-bold">S</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td style="background:#eee;"></td>
+                <td style="background:#eee;"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td style="background:#eee;"></td>
+                <td style="background:#eee;"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td style="background:#eee;"></td>
+                <td style="background:#eee;"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td style="background:#eee;"></td>
+                <td style="background:#eee;"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td rowspan="2" class="text-bold">1</td>
+                <td rowspan="2" class="text-bold">0</td>
+            </tr>
+            <tr>
+                <td class="text-bold">Ö</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td style="background:#eee;"></td>
+                <td style="background:#eee;"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td style="background:#eee;"></td>
+                <td style="background:#eee;"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td style="background:#eee;"></td>
+                <td style="background:#eee;"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td style="background:#eee;"></td>
+                <td style="background:#eee;"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="footer-grid">
+        <div class="footer-box">
+            <div class="text-bold">İŞLETME YETKİLİSİ</div>
+            <div>...../...../20.....</div>
+            <div>ADI SOYADI</div>
+            <div>Kaşe - İmza</div>
+        </div>
+        <div class="footer-box">
+            <div class="text-bold">İNCELENDİ</div>
+            <div>[Müdür Yrd. Adı]</div>
+            <div>Koordinatör Müdür Yardımcısı</div>
+            <div>...../...../20.....</div>
+            <div>İmza</div>
+        </div>
+        <div class="footer-box">
+            <div class="text-center text-bold mb-2">Semboller</div>
+            <table style="border:none; border-collapse:collapse; width: 100%; font-size:9px;">
+                <tr>
+                    <td style="border:none; padding:1px;">X: İşletmede</td>
+                    <td style="border:none; padding:1px;">D: Özürsüz Devamsız</td>
+                </tr>
+                <tr>
+                    <td style="border:none; padding:1px;">O: Okulda</td>
+                    <td style="border:none; padding:1px;">S: Sabah</td>
+                </tr>
+                <tr>
+                    <td style="border:none; padding:1px;">İ: İzinli</td>
+                    <td style="border:none; padding:1px;">Ö: Öğle</td>
+                </tr>
+                <tr>
+                    <td style="border:none; padding:1px;">H: Hasta Sevkli</td>
+                    <td style="border:none; padding:1px;"></td>
+                </tr>
+                <tr>
+                    <td style="border:none; padding:1px;">R: Raporlu</td>
+                    <td style="border:none; padding:1px;"></td>
+                </tr>
+                <tr>
+                    <td style="border:none; padding:1px;">T: Resmi Tatil</td>
+                    <td style="border:none; padding:1px;"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="dipnot">
+        Bu çizelge, işletme tarafından tutulacak, öğrencinin işletmede bulunması gereken günlere ait devamsızlık
+        durumları
+        ilgili sütunda, yanda gösterilen uygun sembollerle belirtilecektir.<br>
+        (İ), (H) ve (R) ile gösterilen devamsızlıklar toplamı özürlü devamsızlık sütununa yazılacaktır.
+    </div>
+
+</body>
+
+</html>

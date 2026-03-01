@@ -1,0 +1,463 @@
+<Window x:Class="MEEY.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:MEEY.Controls"
+        Title="MEEY - Mesleki Eğitim Evrak Yöneticisi" 
+        Icon="ico/MEEY_desktop.ico"
+        Height="700" Width="1200"
+        WindowStartupLocation="CenterScreen"
+        Background="#F5F6FA">
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        
+        <!-- Sol Araç Çubuğu (Siyah) -->
+        <Border Grid.Column="0" 
+                Background="{StaticResource ToolBarBackground}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0" Orientation="Vertical" 
+                           Margin="0,10"
+                           HorizontalAlignment="Center">
+                           
+                    <!-- Araç Çubuğu Butonları -->
+                    <Button Width="40" Height="40" Margin="0,5"
+                           Background="Transparent"
+                           BorderThickness="0"
+                           ToolTip="Veri Girişi"
+                           Click="VeriGirisiButton_Click">
+                        <Grid>
+                            <Rectangle Width="35" Height="35" 
+                                      Fill="#3498DB" 
+                                      RadiusX="5" RadiusY="5"/>
+                            <TextBlock Text="📝" 
+                                      FontSize="18"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"
+                                      Foreground="White"/>
+                        </Grid>
+                    </Button>
+                    
+                    <Button Width="40" Height="40" Margin="0,5"
+                           Background="Transparent"
+                           BorderThickness="0"
+                           ToolTip="Veritabanı Yönetimi"
+                           Click="Modul2Button_Click">
+                        <Grid>
+                            <Rectangle Width="35" Height="35" 
+                                      Fill="#27AE60" 
+                                      RadiusX="5" RadiusY="5"/>
+                            <TextBlock Text="💾" 
+                                      FontSize="18"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"
+                                      Foreground="White"/>
+                        </Grid>
+                    </Button>
+                    
+                    <Button Width="40" Height="40" Margin="0,5"
+                           Background="Transparent"
+                           BorderThickness="0"
+                           ToolTip="Raporlar"
+                           Click="Modul3Button_Click">
+                        <Grid>
+                            <Rectangle Width="35" Height="35" 
+                                      Fill="#9B59B6" 
+                                      RadiusX="5" RadiusY="5"/>
+                            <TextBlock Text="📊" 
+                                      FontSize="18"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"
+                                      Foreground="White"/>
+                        </Grid>
+                    </Button>
+
+                    <Button Width="40" Height="40" Margin="0,5"
+                           Background="Transparent"
+                           BorderThickness="0"
+                           ToolTip="Metin Editörü Deneme"
+                           Click="MetinEditorDenemeButton_Click">
+                        <Grid>
+                            <Rectangle Width="35" Height="35"
+                                      Fill="#E67E22"
+                                      RadiusX="5" RadiusY="5"/>
+                            <TextBlock Text="⌨️"
+                                      FontSize="18"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"
+                                      Foreground="White"/>
+                        </Grid>
+                    </Button>
+
+                    <Button Width="40" Height="40" Margin="0,5"
+                           Background="Transparent"
+                           BorderThickness="0"
+                           ToolTip="Diğer Evraklar"
+                           Click="DigerEvraklarButton_Click">
+                        <Grid>
+                            <Rectangle Width="35" Height="35"
+                                      Fill="#E74C3C"
+                                      RadiusX="5" RadiusY="5"/>
+                            <TextBlock Text="📁"
+                                      FontSize="18"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"
+                                      Foreground="White"/>
+                        </Grid>
+                    </Button>
+
+                </StackPanel>
+
+                <!-- Hakkında Butonu (En Alta Sabitlendi) -->
+                <Button x:Name="btnHakkinda" Grid.Row="1" Width="40" Height="40" Margin="0,10,0,20"
+                       Background="Transparent"
+                       BorderThickness="0"
+                       ToolTip="Hakkında"
+                       Click="HakkindaButton_Click"
+                       VerticalAlignment="Bottom">
+                    <Grid>
+                        <Rectangle Width="35" Height="35"
+                                  Fill="#F1C40F"
+                                  RadiusX="17.5" RadiusY="17.5"/>
+                        <TextBlock Text="i"
+                                  FontSize="22"
+                                  FontWeight="Bold"
+                                  FontStyle="Italic"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  Foreground="#2C3E50"/>
+                    </Grid>
+                </Button>
+            </Grid>
+        </Border>
+        
+        <!-- Ana İçerik Alanı - Grid Düzeni -->
+        <Grid Grid.Column="1" Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="3*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <!-- Sol Üst Konteyner - Modül 1 -->
+            <Border x:Name="Modul1Border"
+                   Grid.Row="0" Grid.Column="0" 
+                   Style="{StaticResource ModuleContainer}"
+                   MinHeight="140"
+                   Padding="10,15">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="2*"/>
+                    </Grid.RowDefinitions>
+                    
+                    <!-- Üst Kısım - Araç İsmi (1/3) -->
+                    <Viewbox Grid.Row="0" StretchDirection="DownOnly">
+                        <TextBlock x:Name="Modul1Baslik"
+                                  Text="Veri Girişi" 
+                                  FontSize="32"
+                                  FontWeight="Bold"
+                                  Foreground="White"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  TextAlignment="Center"
+                                  Margin="5"/>
+                    </Viewbox>
+                    
+                    <!-- Alt Kısım - Profil (2/3) -->
+                    <StackPanel x:Name="Modul1ProfilPanel" Grid.Row="1" 
+                               VerticalAlignment="Center"
+                               Margin="0,10,0,0">
+                        
+                        <!-- Profil Başlık -->
+                        <TextBlock Text="Profil" 
+                                  FontSize="11"
+                                  FontWeight="SemiBold"
+                                  Foreground="White"
+                                  Margin="0,0,0,5"/>
+                        
+                        <!-- Profil ComboBox -->
+                        <ComboBox x:Name="cmbProfil"
+                                 Height="28"
+                                 FontSize="11"
+                                 Background="White"
+                                 BorderBrush="White"
+                                 Margin="0,0,0,8"
+                                 SelectedIndex="0">
+                            <ComboBoxItem Content="Varsayılan"/>
+                            <ComboBoxItem Content="Profil 1"/>
+                            <ComboBoxItem Content="Profil 2"/>
+                            <ComboBoxItem Content="Profil 3"/>
+                        </ComboBox>
+                        
+                        <!-- Butonlar -->
+                        <UniformGrid Rows="1" 
+                                    Columns="5"
+                                    Margin="0">
+                            
+                            <!-- Yeni -->
+                            <Button Height="30" 
+                                   Background="White"
+                                   BorderBrush="White"
+                                   BorderThickness="1"
+                                   Margin="2,0"
+                                   Cursor="Hand"
+                                   ToolTip="Yeni Profil"
+                                   Click="BtnYeniProfil_Click">
+                                <TextBlock Text="➕" FontSize="15"/>
+                            </Button>
+                            
+                            <!-- Düzenle -->
+                            <Button Height="30" 
+                                   Background="White"
+                                   BorderBrush="White"
+                                   BorderThickness="1"
+                                   Margin="2,0"
+                                   Cursor="Hand"
+                                   ToolTip="Düzenle"
+                                   Click="BtnDuzenleProfil_Click">
+                                <TextBlock Text="✏️" FontSize="15"/>
+                            </Button>
+                            
+                            <!-- Sil -->
+                            <Button Height="30" 
+                                   Background="White"
+                                   BorderBrush="White"
+                                   BorderThickness="1"
+                                   Margin="2,0"
+                                   Cursor="Hand"
+                                   ToolTip="Sil"
+                                   Click="BtnSilProfil_Click">
+                                <TextBlock Text="🗑️" FontSize="15"/>
+                            </Button>
+                            
+                            <!-- Kaydet -->
+                            <Button Height="30" 
+                                   Background="White"
+                                   BorderBrush="White"
+                                   BorderThickness="1"
+                                   Margin="2,0"
+                                   Cursor="Hand"
+                                   ToolTip="Kaydet"
+                                   Click="BtnKaydetProfil_Click">
+                                <TextBlock Text="💾" FontSize="15"/>
+                            </Button>
+                            
+                            <!-- Yenile -->
+                            <Button Height="30" 
+                                   Background="White"
+                                   BorderBrush="White"
+                                   BorderThickness="1"
+                                   Margin="2,0"
+                                   Cursor="Hand"
+                                   ToolTip="Yenile"
+                                   Click="BtnYenileProfil_Click">
+                                <TextBlock Text="🔄" FontSize="15"/>
+                            </Button>
+                            
+                        </UniformGrid>
+                    </StackPanel>
+                    
+                </Grid>
+            </Border>
+            
+            <!-- Sağ Üst Konteyner - Modül 2 -->
+                 <Border x:Name="Modul2Border"
+                     Grid.Row="0" Grid.Column="1" 
+                   Style="{StaticResource ModuleContainer}">
+                <StackPanel>
+                    <TextBlock x:Name="Modul2Baslik"
+                              Text="Modül 2" 
+                              Style="{StaticResource ModuleTitle}"/>
+                    <TextBlock x:Name="Modul2Icerik"
+                              Text=""
+                              FontSize="12"
+                              Foreground="#1F2D3D"
+                              TextWrapping="Wrap"/>
+                </StackPanel>
+            </Border>
+            
+            <!-- Sol Alt Konteyner - Modül 3 (Ana Menü) -->
+                 <Border x:Name="Modul3Border"
+                     Grid.Row="1" Grid.Column="0" 
+                   Style="{StaticResource ModuleContainer}">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel x:Name="Modul3Icerik">
+                        
+                        <!-- Okul & Koordinatörler -->
+                        <Button Height="48" Margin="0,4"
+                               Background="Transparent"
+                               BorderThickness="0"
+                               HorizontalContentAlignment="Left"
+                               Padding="8,0"
+                               Cursor="Hand"
+                               Click="MenuOkulKoordinatorler_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="🎓" FontSize="20" 
+                                          VerticalAlignment="Center"
+                                          Margin="0,0,10,0"/>
+                                <TextBlock Text="Okul &amp; Koordinatörler" 
+                                          FontSize="12"
+                                          Foreground="#2C3E50"
+                                          VerticalAlignment="Center"
+                                          TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Button>
+                        
+                        <!-- İşletmeler -->
+                        <Button Height="48" Margin="0,4"
+                               Background="Transparent"
+                               BorderThickness="0"
+                               HorizontalContentAlignment="Left"
+                               Padding="8,0"
+                               Cursor="Hand"
+                               Click="MenuIsletmeler_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="💼" FontSize="20" 
+                                          VerticalAlignment="Center"
+                                          Margin="0,0,10,0"/>
+                                <TextBlock Text="İşletmeler" 
+                                          FontSize="12"
+                                          Foreground="#2C3E50"
+                                          VerticalAlignment="Center"
+                                          TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Button>
+                        
+                        <!-- Alan / Dal -->
+                        <Button Height="48" Margin="0,4"
+                               Background="Transparent"
+                               BorderThickness="0"
+                               HorizontalContentAlignment="Left"
+                               Padding="8,0"
+                               Cursor="Hand"
+                               Click="MenuAlanDal_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="🏷️" FontSize="20" 
+                                          VerticalAlignment="Center"
+                                          Margin="0,0,10,0"/>
+                                <TextBlock Text="Alan / Dal" 
+                                          FontSize="12"
+                                          Foreground="#2C3E50"
+                                          VerticalAlignment="Center"
+                                          TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Button>
+                        
+                        <!-- Koordinatör Tanımlama -->
+                        <Button Height="48" Margin="0,4"
+                               Background="Transparent"
+                               BorderThickness="0"
+                               HorizontalContentAlignment="Left"
+                               Padding="8,0"
+                               Cursor="Hand"
+                               Click="MenuKoordinatorTanimlama_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="⚙️" FontSize="20" 
+                                          VerticalAlignment="Center"
+                                          Margin="0,0,10,0"/>
+                                <TextBlock Text="Koordinatör Tanımlama" 
+                                          FontSize="12"
+                                          Foreground="#2C3E50"
+                                          VerticalAlignment="Center"
+                                          TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Button>
+                        
+                        <!-- Öğrenciler -->
+                        <Button Height="48" Margin="0,4"
+                               Background="Transparent"
+                               BorderThickness="0"
+                               HorizontalContentAlignment="Left"
+                               Padding="8,0"
+                               Cursor="Hand"
+                               Click="MenuOgrenciler_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="👥" FontSize="20" 
+                                          VerticalAlignment="Center"
+                                          Margin="0,0,10,0"/>
+                                <TextBlock Text="Öğrenciler" 
+                                          FontSize="12"
+                                          Foreground="#2C3E50"
+                                          VerticalAlignment="Center"
+                                          TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Button>
+                        
+                        <!-- Çalışma Takvimi -->
+                        <Button Height="48" Margin="0,4"
+                               Background="Transparent"
+                               BorderThickness="0"
+                               HorizontalContentAlignment="Left"
+                               Padding="8,0"
+                               Cursor="Hand"
+                               Click="MenuCalismaTakvimi_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="📅" FontSize="20" 
+                                          VerticalAlignment="Center"
+                                          Margin="0,0,10,0"/>
+                                <TextBlock Text="Çalışma Takvimi" 
+                                          FontSize="12"
+                                          Foreground="#2C3E50"
+                                          VerticalAlignment="Center"
+                                          TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Button>
+                        
+                        <!-- Devamsızlık Girişi -->
+                        <Button Height="48" Margin="0,4"
+                               Background="Transparent"
+                               BorderThickness="0"
+                               HorizontalContentAlignment="Left"
+                               Padding="8,0"
+                               Cursor="Hand"
+                               Click="MenuDevamsizlikGirisi_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="📋" FontSize="20" 
+                                          VerticalAlignment="Center"
+                                          Margin="0,0,10,0"/>
+                                <TextBlock Text="Devamsızlık Girişi" 
+                                          FontSize="12"
+                                          Foreground="#2C3E50"
+                                          VerticalAlignment="Center"
+                                          TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Button>
+                        
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+            
+            <!-- Sağ Alt Konteyner - Modül 4 -->
+                 <Border x:Name="Modul4Border"
+                     Grid.Row="1" Grid.Column="1" 
+                   Style="{StaticResource ModuleContainer}">
+                <Grid x:Name="Modul4Container">
+                    <StackPanel x:Name="Modul4Default">
+                        <TextBlock x:Name="Modul4Baslik"
+                                  Text="Modül 4" 
+                                  Style="{StaticResource ModuleTitle}"/>
+                        <TextBlock x:Name="Modul4Icerik"
+                                  Text=""
+                                  FontSize="12"
+                                  Foreground="#1F2D3D"
+                                  TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+            
+        </Grid>
+        
+    </Grid>
+    
+</Window>

@@ -1,0 +1,38 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <!-- Renkler -->
+    <SolidColorBrush x:Key="ToolBarBackground" Color="#2C2C2C"/>
+    <SolidColorBrush x:Key="ContainerBackground" Color="White"/>
+    <SolidColorBrush x:Key="AccentColor" Color="#E74C3C"/>
+    
+    <!-- Konteyner Stili -->
+    <Style x:Key="ModuleContainer" TargetType="Border">
+        <Setter Property="Background" Value="{StaticResource ContainerBackground}"/>
+        <Setter Property="CornerRadius" Value="15"/>
+        <Setter Property="Padding" Value="20"/>
+        <Setter Property="Margin" Value="5"/>
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.3"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <!-- Başlık Stili -->
+    <Style x:Key="ModuleTitle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="#2C3E50"/>
+        <Setter Property="Margin" Value="0,0,0,10"/>
+    </Style>
+    
+    <!-- Açıklama Stili -->
+    <Style x:Key="ModuleDescription" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Foreground" Value="#7F8C8D"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="LineHeight" Value="18"/>
+    </Style>
+    
+</ResourceDictionary>

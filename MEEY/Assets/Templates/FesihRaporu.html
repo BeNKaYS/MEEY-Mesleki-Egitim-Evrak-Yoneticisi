@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Sözleşme Fesih Formu</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 14px;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            background: white;
+            box-sizing: border-box;
+            border: none;
+        }
+
+        @media print {
+            body {
+                margin: 0;
+                padding: 20mm;
+                box-shadow: none;
+                border: none;
+            }
+        }
+
+        .header {
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 25px;
+            font-size: 15px;
+            line-height: 1.4;
+        }
+
+        .icerik {
+            text-align: justify;
+            margin-bottom: 25px;
+            line-height: 1.6;
+            text-indent: 40px;
+        }
+
+        table.bilgi-tablo {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            border: 1px solid #000;
+        }
+
+        .bilgi-tablo th,
+        .bilgi-tablo td {
+            border: 1px solid #000;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .bilgi-tablo th {
+            width: 35%;
+            background-color: #f9f9f9;
+        }
+
+        .tarih {
+            text-align: right;
+            margin-bottom: 25px;
+            font-weight: bold;
+        }
+
+        .imza-alani {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 60px;
+        }
+
+        .imza-kutu {
+            width: 45%;
+            border: 1px dotted #ccc;
+            padding: 15px;
+            text-align: center;
+            min-height: 120px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        T.C.<br>
+        MİLLÎ EĞİTİM BAKANLIĞI<br>
+        [OKUL ADI]<br><br>
+        MESLEKİ EĞİTİM SÖZLEŞMESİ FESİH İHBARNAMESİ
+    </div>
+
+    <div class="tarih">Tarih: ..... / ..... / 20.....</div>
+
+    <div class="icerik">
+        Okulunuz ................................................ sınıfı, .............................. numaralı
+        <strong>[Öğrenci Adı Soyadı]</strong> isimli öğrencisi ile işletmemiz arasında
+        ........./........./20......... tarihinde imzalanan İşletmelerde Mesleki Eğitim Sözleşmesi,
+        aşağıda belirtilen gerekçe/gerekçeler doğrultusunda fesh edilmiştir.<br><br>
+        Bilgilerinizi ve gereğini arz ederim.
+    </div>
+
+    <table class="bilgi-tablo">
+        <tr>
+            <th>İşletme Adı</th>
+            <td>[İşletme Adı Buraya]</td>
+        </tr>
+        <tr>
+            <th>Öğrenci Adı Soyadı</th>
+            <td>[Öğrenci Adı Soyadı Buraya]</td>
+        </tr>
+        <tr>
+            <th>Sözleşme Fesih Tarihi</th>
+            <td>..... / ..... / 20.....</td>
+        </tr>
+        <tr>
+            <th>Fesih Gerekçesi (Lütfen işaretleyiniz)</th>
+            <td>
+                [ &nbsp; ] Öğrencinin devamsızlığı<br>
+                [ &nbsp; ] İşletmenin şartlarının değişmesi veya kapanması<br>
+                [ &nbsp; ] Öğrencinin disiplin suçu işlemesi<br>
+                [ &nbsp; ] Karşılıklı anlaşma ile sözleşmenin sonlandırılması<br>
+                [ &nbsp; ] Sağlık sorunları beyanı<br>
+                [ &nbsp; ] Diğer: .....................................................................
+            </td>
+        </tr>
+    </table>
+
+    <div class="imza-alani">
+        <div class="imza-kutu">
+            <strong>İŞLETME YETKİLİSİ</strong><br><br><br>
+            Adı Soyadı: ..........................<br>
+            Unvanı: ..............................<br>
+            İmza / Kaşe
+        </div>
+        <div class="imza-kutu">
+            <strong>ÖĞRENCİ VELİSİ / REŞİTSE KENDİSİ</strong><br><br><br>
+            Adı Soyadı: ..........................<br>
+            Yakınlığı: ............................<br>
+            İmza
+        </div>
+    </div>
+
+</body>
+
+</html>

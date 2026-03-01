@@ -1,0 +1,119 @@
+<UserControl x:Class="MEEY.Controls.Ogrenciler"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="White">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Form Alanı -->
+        <Grid Grid.Row="0" Margin="15">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            
+            <!-- Okul No -->
+            <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,10,0">
+                <TextBlock Text="Okul No:" FontSize="12" Margin="0,5,0,2"/>
+                <TextBox x:Name="txtOkulNo" Height="30" FontSize="12"/>
+            </StackPanel>
+            
+            <!-- Sınıf -->
+            <StackPanel Grid.Row="0" Grid.Column="1" Margin="10,0,0,0">
+                <TextBlock Text="Sınıf:" FontSize="12" Margin="0,5,0,2"/>
+                <TextBox x:Name="txtSinif" Height="30" FontSize="12"/>
+            </StackPanel>
+            
+            <!-- Ad Soyad -->
+            <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="0">
+                <TextBlock Text="Ad Soyad:" FontSize="12" Margin="0,10,0,2"/>
+                <TextBox x:Name="txtAdSoyad" Height="30" FontSize="12"/>
+            </StackPanel>
+            
+            <!-- Alan / Dal -->
+            <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,0,10,0">
+                <TextBlock Text="Alan / Dal:" FontSize="12" Margin="0,10,0,2"/>
+                <ComboBox x:Name="cmbAlanDal" Height="30" FontSize="12"/>
+            </StackPanel>
+            
+            <!-- Koordinatör -->
+            <StackPanel Grid.Row="2" Grid.Column="1" Margin="10,0,0,0">
+                <TextBlock Text="Koordinatör:" FontSize="12" Margin="0,10,0,2"/>
+                <ComboBox x:Name="cmbKoordinator" Height="30" FontSize="12"/>
+            </StackPanel>
+            
+            <!-- Günler -->
+            <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="0">
+                <TextBlock Text="Günler:" FontSize="12" Margin="0,10,0,5"/>
+                <WrapPanel x:Name="wpGunler">
+                    <ToggleButton x:Name="btnPzt" Content="Pzt" Width="60" Height="35" Margin="0,0,5,5" 
+                                 Background="#ECF0F1" BorderBrush="#BDC3C7" Cursor="Hand"/>
+                    <ToggleButton x:Name="btnSal" Content="Sal" Width="60" Height="35" Margin="0,0,5,5" 
+                                 Background="#ECF0F1" BorderBrush="#BDC3C7" Cursor="Hand"/>
+                    <ToggleButton x:Name="btnCar" Content="Çar" Width="60" Height="35" Margin="0,0,5,5" 
+                                 Background="#ECF0F1" BorderBrush="#BDC3C7" Cursor="Hand"/>
+                    <ToggleButton x:Name="btnPer" Content="Per" Width="60" Height="35" Margin="0,0,5,5" 
+                                 Background="#ECF0F1" BorderBrush="#BDC3C7" Cursor="Hand"/>
+                    <ToggleButton x:Name="btnCum" Content="Cum" Width="60" Height="35" Margin="0,0,5,5" 
+                                 Background="#ECF0F1" BorderBrush="#BDC3C7" Cursor="Hand"/>
+                    <ToggleButton x:Name="btnCmt" Content="Cmt" Width="60" Height="35" Margin="0,0,5,5" 
+                                 Background="#ECF0F1" BorderBrush="#BDC3C7" Cursor="Hand"/>
+                    <ToggleButton x:Name="btnPaz" Content="Paz" Width="60" Height="35" Margin="0,0,5,5" 
+                                 Background="#ECF0F1" BorderBrush="#BDC3C7" Cursor="Hand"/>
+                </WrapPanel>
+            </StackPanel>
+            
+            <!-- Butonlar -->
+            <UniformGrid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" 
+                        Rows="1" Columns="4" Margin="0,15,0,0" Height="35">
+                <Button Content="➕ Yeni" Margin="0,0,5,0" 
+                       Background="#27AE60" Foreground="White" 
+                       BorderThickness="0" Cursor="Hand"
+                       Click="BtnYeni_Click"/>
+                <Button Content="🗑️ Sil" Margin="5,0" 
+                       Background="#E74C3C" Foreground="White" 
+                       BorderThickness="0" Cursor="Hand"
+                       Click="BtnSil_Click"/>
+                <Button Content="🗑️ Tümünü Sil" Margin="5,0" 
+                       Background="#C0392B" Foreground="White" 
+                       BorderThickness="0" Cursor="Hand"
+                       Click="BtnTumunuSil_Click"/>
+                <Button Content="💾 Kaydet" Margin="5,0,0,0" 
+                       Background="#3498DB" Foreground="White" 
+                       BorderThickness="0" Cursor="Hand"
+                       Click="BtnKaydet_Click"/>
+            </UniformGrid>
+            
+        </Grid>
+        
+        <!-- DataGrid -->
+        <DataGrid x:Name="dgOgrenciler" 
+                 Grid.Row="1" 
+                 Margin="15,0,15,15"
+                 AutoGenerateColumns="False"
+                 CanUserAddRows="False"
+                 SelectionMode="Single"
+                 SelectionChanged="DgOgrenciler_SelectionChanged">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="No" Binding="{Binding Id}" Width="50" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Okul No" Binding="{Binding OkulNo}" Width="80" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Ad Soyad" Binding="{Binding AdSoyad}" Width="*" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Sınıf" Binding="{Binding Sinif}" Width="80" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Alan/Dal" Binding="{Binding AlanDal}" Width="*" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Koordinatör" Binding="{Binding Koordinator}" Width="*" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Günler" Binding="{Binding Gunler}" Width="150" IsReadOnly="True"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        
+    </Grid>
+</UserControl>

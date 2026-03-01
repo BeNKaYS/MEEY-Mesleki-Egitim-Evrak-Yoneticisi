@@ -1,0 +1,348 @@
+<UserControl x:Class="MEEY.Reports.RaporBase"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+             Background="#E6FFFFFF">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="350"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        
+        <!-- Sol Taraf: Veri Seçimi (Üst) + Rapor Ayarları (Alt) -->
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="2*"/>
+            </Grid.RowDefinitions>
+            
+            <!-- Bölge 1: Veri Seçimi (Üst Sol) -->
+            <Border Grid.Row="0" BorderBrush="#BDC3C7" BorderThickness="0,0,1,1" Padding="10" CornerRadius="10,10,0,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    
+                    <TextBlock Grid.Row="0" Text="Veri Seçimi" FontSize="14" FontWeight="Bold" Margin="0,0,0,10"/>
+                    
+                    <CheckBox Grid.Row="1" x:Name="chkSelectAll" Content="Tümünü Seç" Margin="0,0,0,10" 
+                             Checked="SelectAll_Changed" Unchecked="SelectAll_Changed"/>
+                    
+                    <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
+                        <ItemsControl x:Name="DataList">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <CheckBox Content="{Binding DisplayText}" 
+                                             IsChecked="{Binding IsSelected, Mode=TwoWay}"
+                                             Margin="0,2"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+            
+            <!-- Bölge 2: Rapor Ayarları (Alt Sol) -->
+            <Border Grid.Row="1" BorderBrush="#BDC3C7" BorderThickness="0,0,1,0" Padding="15" CornerRadius="0,0,10,10">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ScrollViewer.Resources>
+                        <Style TargetType="{x:Type ScrollBar}">
+                            <Setter Property="Opacity" Value="0"/>
+                            <Setter Property="Background" Value="#D6EAF8"/>
+                            <Setter Property="Foreground" Value="#2E86C1"/>
+                            <Setter Property="BorderBrush" Value="#2E86C1"/>
+                            <Setter Property="Width" Value="12"/>
+                            <Setter Property="Height" Value="12"/>
+                            <Style.Triggers>
+                                <Trigger Property="Orientation" Value="Horizontal">
+                                    <Setter Property="Height" Value="12"/>
+                                </Trigger>
+                                <Trigger Property="Orientation" Value="Vertical">
+                                    <Setter Property="Width" Value="12"/>
+                                </Trigger>
+                                <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=ScrollViewer}}" Value="True">
+                                    <Setter Property="Opacity" Value="1"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ScrollViewer.Resources>
+                    <StackPanel>
+                        <TextBlock Text="Rapor Ayarları" FontSize="14" FontWeight="Bold" Margin="0,0,0,15"/>
+                        
+                        <!-- Zaman Seçimi -->
+                        <StackPanel x:Name="TimeRangePanel" Orientation="Horizontal" Margin="0,0,0,10">
+                            <RadioButton x:Name="rbBuHafta" Content="Bu Hafta" Margin="0,0,15,0" 
+                                        GroupName="TimeRange" Checked="TimeRange_Changed"/>
+                            <RadioButton x:Name="rbBuAy" Content="Bu Ay" Margin="0,0,15,0" 
+                                        GroupName="TimeRange" IsChecked="True" Checked="TimeRange_Changed"/>
+                            <RadioButton x:Name="rbZamanAraligi" Content="Zaman Aralığı" 
+                                        GroupName="TimeRange" Checked="TimeRange_Changed"/>
+                        </StackPanel>
+                        
+                        <!-- Başlangıç / Bitiş -->
+                        <Grid x:Name="DateRangePanel" Margin="0,5,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="95"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Başlangıç:" FontSize="12" VerticalAlignment="Center"/>
+                            <DatePicker Grid.Row="0" Grid.Column="2" x:Name="dpBaslangic" Height="30"/>
+
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Bitiş:" FontSize="12" VerticalAlignment="Center" Margin="0,10,0,0"/>
+                            <DatePicker Grid.Row="1" Grid.Column="2" x:Name="dpBitis" Height="30" Margin="0,10,0,0"/>
+                        </Grid>
+
+                        <StackPanel x:Name="NupPanel" Orientation="Horizontal" Margin="0,10,0,0" VerticalAlignment="Center">
+                            <TextBlock Text="Her sayfada" FontSize="12" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <ComboBox x:Name="cmbHerSayfada" Width="230" Height="30" SelectedIndex="0">
+                                <ComboBoxItem Content="1 Form (Dikey)"/>
+                                <ComboBoxItem Content="2 Form (Yatay)"/>
+                            </ComboBox>
+                        </StackPanel>
+
+                        <StackPanel x:Name="AylikOptionsPanel" Margin="0,14,0,0" Visibility="Collapsed">
+                            <CheckBox x:Name="chkAylikAutoDoldur"
+                                      Content="Değerlendirme ve Öneriler otomatik doldur"
+                                      IsChecked="True"
+                                      Checked="AylikAutoDoldur_Changed"
+                                      Unchecked="AylikAutoDoldur_Changed"/>
+                            <CheckBox x:Name="chkUstaBelgesi"
+                                      Content="Usta öğreticilik belgesi var"
+                                      Margin="20,8,0,0"
+                                      IsEnabled="False"/>
+                        </StackPanel>
+
+                        <StackPanel x:Name="GunlukRehberlikOptionsPanel" Margin="0,14,0,0" Visibility="Collapsed">
+                            <TextBlock Text="Taslak Seçimi" FontSize="12" Foreground="#5D6D7E"/>
+                            <ComboBox x:Name="cmbGunlukTaslak" Margin="0,4,0,12" Height="30" SelectionChanged="GunlukTaslak_SelectionChanged">
+                                <ComboBoxItem Content="Manuel Giriş"/>
+                                <ComboBoxItem Content="Taslak 1"/>
+                                <ComboBoxItem Content="Taslak 2"/>
+                                <ComboBoxItem Content="Taslak 3"/>
+                                <ComboBoxItem Content="Taslak 4"/>
+                                <ComboBoxItem Content="Taslak 5"/>
+                                <ComboBoxItem Content="Taslak 6"/>
+                                <ComboBoxItem Content="Taslak 7"/>
+                                <ComboBoxItem Content="Taslak 8"/>
+                                <ComboBoxItem Content="Taslak 9"/>
+                                <ComboBoxItem Content="Taslak 10"/>
+                            </ComboBox>
+
+                            <TextBlock Text="Sorun (Olumsuz Etkileyen Hususlar)" FontSize="12" Foreground="#5D6D7E"/>
+                            <TextBox x:Name="txtGunlukSorun" Height="60" AcceptsReturn="True" TextWrapping="Wrap" Margin="0,4,0,10" VerticalScrollBarVisibility="Auto"/>
+
+                            <TextBlock Text="Çözüm (Rehberlik ve Önlemler)" FontSize="12" Foreground="#5D6D7E"/>
+                            <TextBox x:Name="txtGunlukCozum" Height="60" AcceptsReturn="True" TextWrapping="Wrap" Margin="0,4,0,10" VerticalScrollBarVisibility="Auto"/>
+
+                            <TextBlock Text="Sonuç (Belirtilmesinde Yarar Görülenler)" FontSize="12" Foreground="#5D6D7E"/>
+                            <TextBox x:Name="txtGunlukSonuc" Height="60" AcceptsReturn="True" TextWrapping="Wrap" Margin="0,4,0,10" VerticalScrollBarVisibility="Auto"/>
+                        </StackPanel>
+
+                        <StackPanel x:Name="MazeretOptionsPanel" Margin="0,14,0,0" Visibility="Collapsed">
+                            <TextBlock Text="Mazeret İzin Süresi (Gün)" FontSize="12" Foreground="#5D6D7E"/>
+                            <TextBox x:Name="txtMazeretIzinGun"
+                                     Margin="0,4,0,0"
+                                     Height="34"
+                                     VerticalContentAlignment="Center"
+                                     Text="1"/>
+                        </StackPanel>
+
+                        <StackPanel x:Name="NotCizelgesiOptionsPanel" Margin="0,14,0,0" Visibility="Collapsed">
+                            <TextBlock Text="Not Fişi Türü" FontSize="12" Foreground="#5D6D7E"/>
+                            <ComboBox x:Name="cmbNotFisiTuru" Margin="0,4,0,12" Height="34" SelectedIndex="0">
+                                <ComboBoxItem Content="Mesleki Eğitim Not Fişi"/>
+                            </ComboBox>
+
+                            <TextBlock Text="Sayfa Düzeni" FontSize="12" Foreground="#5D6D7E"/>
+                            <ComboBox x:Name="cmbNotSayfaDuzeni" Margin="0,4,0,12" Height="34" SelectedIndex="0">
+                                <ComboBoxItem Content="1 sayfaya 1 form (Yatay)"/>
+                                <ComboBoxItem Content="1 sayfaya 2 form (Dikey)"/>
+                            </ComboBox>
+
+                            <TextBlock Text="Dönem" FontSize="12" Foreground="#5D6D7E"/>
+                            <ComboBox x:Name="cmbNotDonem" Margin="0,4,0,0" Height="34" SelectedIndex="0">
+                                <ComboBoxItem Content="1. Dönem"/>
+                                <ComboBoxItem Content="2. Dönem"/>
+                            </ComboBox>
+                        </StackPanel>
+
+                        <StackPanel x:Name="FesihOptionsPanel" Margin="0,14,0,0" Visibility="Collapsed">
+                            <CheckBox x:Name="chkFesihBosSablon"
+                                      Content="Formu boş oluştur (şablon)"
+                                      Margin="0,0,0,10"
+                                      Checked="FesihBosSablon_Changed"
+                                      Unchecked="FesihBosSablon_Changed"/>
+
+                            <TextBlock Text="Sözleşme Tarihi" FontSize="12" Foreground="#5D6D7E"/>
+                            <DatePicker x:Name="dpFesihSozlesmeTarihi" Margin="0,4,0,10" Height="34"/>
+
+                            <TextBlock Text="Sözleşme İptal Tarihi" FontSize="12" Foreground="#5D6D7E"/>
+                            <DatePicker x:Name="dpFesihIptalTarihi" Margin="0,4,0,10" Height="34"/>
+
+                            <TextBlock Text="İptal Nedenleri" FontSize="12" Foreground="#5D6D7E"/>
+                            <TextBox x:Name="txtFesihIptalNedenleri"
+                                     Margin="0,4,0,10"
+                                     Height="90"
+                                     AcceptsReturn="True"
+                                     TextWrapping="Wrap"
+                                     VerticalScrollBarVisibility="Auto"/>
+
+                            <TextBlock Text="Not: Öğrenci seçerseniz işletme ve koordinatör bilgileri otomatik gelir. 'Formu boş oluştur' işaretliyse seçim yapmadan boş şablon üretir."
+                                       FontSize="11"
+                                       Foreground="#7F8C8D"
+                                       TextWrapping="Wrap"/>
+                        </StackPanel>
+
+                        <!-- Haftalık Görev Takip Seçenekleri -->
+                        <StackPanel x:Name="HaftalikGorevOptionsPanel" Margin="0,14,0,0" Visibility="Collapsed">
+
+                            <!-- Eğitim Türü -->
+                            <TextBlock Text="Eğitim Türü" FontSize="13" FontWeight="SemiBold" Foreground="#1C2833" Margin="0,0,0,4"/>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                                <RadioButton x:Name="rbHaftalikMesem" Content="MESEM" IsChecked="True" Margin="0,0,16,0" VerticalContentAlignment="Center" FontSize="13"/>
+                                <RadioButton x:Name="rbHaftalikOrgun" Content="Örgün Eğitim" Margin="0,0,0,0" VerticalContentAlignment="Center" FontSize="13"/>
+                            </StackPanel>
+
+                            <!-- Ay -->
+                            <TextBlock Text="Ay" FontSize="13" FontWeight="SemiBold" Foreground="#1C2833" Margin="0,0,0,4"/>
+                            <ComboBox x:Name="cmbHaftalikAy" Height="30" Margin="0,0,0,16" FontSize="13" VerticalContentAlignment="Center" SelectedIndex="0" SelectionChanged="CmbHaftalikAy_SelectionChanged">
+                                <ComboBoxItem Content="Lütfen bir ay seçin"/>
+                                <ComboBoxItem Content="Ocak"/>
+                                <ComboBoxItem Content="Şubat"/>
+                                <ComboBoxItem Content="Mart"/>
+                                <ComboBoxItem Content="Nisan"/>
+                                <ComboBoxItem Content="Mayıs"/>
+                                <ComboBoxItem Content="Haziran"/>
+                                <ComboBoxItem Content="Temmuz"/>
+                                <ComboBoxItem Content="Ağustos"/>
+                                <ComboBoxItem Content="Eylül"/>
+                                <ComboBoxItem Content="Ekim"/>
+                                <ComboBoxItem Content="Kasım"/>
+                                <ComboBoxItem Content="Aralık"/>
+                            </ComboBox>
+
+                            <!-- Hafta CheckBoxes -->
+                            <TextBlock Text="Seçilen Ay İçin Hafta Sayısı (Lütfen işaretleyin)" FontSize="13" FontWeight="SemiBold" Foreground="#1C2833" Margin="0,0,0,6"/>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                                <CheckBox x:Name="chkHaftalik1" Content="1. Hafta" IsChecked="True" Margin="0,0,8,0" VerticalContentAlignment="Center"/>
+                                <CheckBox x:Name="chkHaftalik2" Content="2. Hafta" Margin="0,0,8,0" VerticalContentAlignment="Center"/>
+                                <CheckBox x:Name="chkHaftalik3" Content="3. Hafta" IsChecked="True" Margin="0,0,8,0" VerticalContentAlignment="Center"/>
+                                <CheckBox x:Name="chkHaftalik4" Content="4. Hafta" Margin="0,0,8,0" VerticalContentAlignment="Center"/>
+                                <CheckBox x:Name="chkHaftalik5" Content="5. Hafta" IsChecked="True" Margin="0,0,0,0" VerticalContentAlignment="Center"/>
+                            </StackPanel>
+
+                            <!-- Öğretim Yılı -->
+                            <TextBlock Text="Öğretim Yılı" FontSize="13" FontWeight="SemiBold" Foreground="#1C2833" Margin="0,0,0,4"/>
+                            <TextBox x:Name="txtHaftalikOgretimYili" Height="30" Margin="0,0,0,0"
+                                     VerticalContentAlignment="Center" Padding="4,0" FontSize="13"
+                                     Text="2025/2026"/>
+                        </StackPanel>
+
+                        <!-- Belge Düzenleme Tarihi -->
+                        <StackPanel x:Name="BelgeTarihiPanel" Margin="0,0,0,0">
+                            <TextBlock Text="Belge Düzenleme Tarihi:" FontSize="12" Margin="0,15,0,5"/>
+                            <DatePicker x:Name="dpBelgeTarihi" Height="30"/>
+                        </StackPanel>
+                        
+                           <Grid x:Name="ReportButtonsGrid" Margin="0,15,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="5"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="5"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Button Grid.Column="0"
+                                x:Name="btnRaporSevkGir" 
+                                Content="📅 Rapor Sevk Gir" 
+                                Height="35"
+                                Background="#E67E22" 
+                                Foreground="White" 
+                                BorderThickness="0"
+                                FontSize="12"
+                                Cursor="Hand"
+                                Click="RaporSevkGir_Click"/>
+
+                            <Button Grid.Column="2" 
+                                x:Name="btnHtmlKaydet"
+                                Content="🌐 HTML Kaydet" 
+                                Height="35"
+                                Background="#2980B9" 
+                                Foreground="White" 
+                                BorderThickness="0"
+                                FontSize="13"
+                                Cursor="Hand"
+                                Click="btnHtmlKaydet_Click"/>
+
+                            <Button x:Name="btnGenerateReport" Grid.Column="4"
+                                Content="📄 Rapor Oluştur" 
+                                Height="35"
+                                Background="#9B59B6" 
+                                Foreground="White" 
+                                BorderThickness="0"
+                                FontSize="14"
+                                Cursor="Hand"
+                                Click="GenerateReport_Click"/>
+                           </Grid>
+                        
+                        <!-- Rapor Sembol Seçimi -->
+                        <StackPanel x:Name="DevamsizlikOptionsPanel">
+                            <TextBlock Text="Rapor sembolleri:" FontSize="12" Margin="0,15,0,5"/>
+                            <WrapPanel Margin="0,5,0,0">
+                            <CheckBox x:Name="chkX" Content="X" IsChecked="True" Margin="0,0,12,8"/>
+                            <CheckBox x:Name="chkO" Content="O" IsChecked="True" Margin="0,0,12,8"/>
+                            <CheckBox x:Name="chkI" Content="İ" IsChecked="True" Margin="0,0,12,8"/>
+                            <CheckBox x:Name="chkH" Content="H" IsChecked="True" Margin="0,0,12,8"/>
+                            <CheckBox x:Name="chkR" Content="R" IsChecked="True" Margin="0,0,12,8"/>
+                            <CheckBox x:Name="chkT" Content="T" IsChecked="True" Margin="0,0,12,8"/>
+                            </WrapPanel>
+                        </StackPanel>
+                        
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+        </Grid>
+        
+        <!-- Bölge 3: Rapor Önizleme (Sağ Tam Boy) -->
+        <Border Grid.Column="1" Padding="15" CornerRadius="10">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                
+                <TextBlock Grid.Row="0" Text="Rapor Önizleme" FontSize="14" FontWeight="Bold" Margin="0,0,0,10"/>
+                
+                <Border x:Name="PreviewFrameBorder" Grid.Row="1" BorderBrush="#BDC3C7" BorderThickness="1" Background="#E6F8F9FA" CornerRadius="10">
+                    <Grid>
+                        <!-- WebView2 for PDF preview -->
+                        <Border x:Name="PdfViewerBorder" Visibility="Collapsed">
+                            <wv2:WebView2 x:Name="PdfPreviewBrowser"/>
+                        </Border>
+                        
+                        <!-- Info panel (shown when no PDF) -->
+                        <ScrollViewer x:Name="InfoScrollViewer" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                            <StackPanel x:Name="PreviewPanel" Margin="20">
+                                <TextBlock Text="Rapor önizlemesi burada görünecek..." 
+                                          FontSize="12" 
+                                          Foreground="#4A5A6A"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
+        
+    </Grid>
+</UserControl>

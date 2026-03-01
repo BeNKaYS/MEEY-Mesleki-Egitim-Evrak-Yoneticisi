@@ -1,0 +1,148 @@
+<UserControl x:Class="MEEY.Controls.OkulKoordinatorler"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Üst Kısım - Form -->
+        <Border Grid.Row="0" Background="White" 
+               Padding="15" Margin="0,0,0,10"
+               CornerRadius="10">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                
+                <!-- Okul Adı -->
+                <TextBlock Grid.Row="0" Grid.Column="0" 
+                          Text="Okul Adı:" 
+                          VerticalAlignment="Center"
+                          Margin="0,8"/>
+                <TextBox x:Name="txtOkulAdi"
+                        Grid.Row="0" Grid.Column="1" 
+                        Height="32"
+                        Margin="0,8"
+                        Padding="8,5"/>
+                
+                <!-- İl -->
+                <TextBlock Grid.Row="1" Grid.Column="0" 
+                          Text="İl:" 
+                          VerticalAlignment="Center"
+                          Margin="0,8"/>
+                <TextBox x:Name="txtIl"
+                        Grid.Row="1" Grid.Column="1" 
+                        Height="32"
+                        Margin="0,8"
+                        Padding="8,5"/>
+                
+                <!-- Okul Müdürü -->
+                <TextBlock Grid.Row="2" Grid.Column="0" 
+                          Text="Okul Müdürü:" 
+                          VerticalAlignment="Center"
+                          Margin="0,8"/>
+                <TextBox x:Name="txtOkulMuduru"
+                        Grid.Row="2" Grid.Column="1" 
+                        Height="32"
+                        Margin="0,8"
+                        Padding="8,5"/>
+                
+                <!-- Koord. Müdür Yrd. -->
+                <TextBlock Grid.Row="3" Grid.Column="0" 
+                          Text="Koord. Müdür Yrd.:" 
+                          VerticalAlignment="Center"
+                          Margin="0,8"/>
+                <TextBox x:Name="txtKoordMudurYrd"
+                        Grid.Row="3" Grid.Column="1" 
+                        Height="32"
+                        Margin="0,8"
+                        Padding="8,5"/>
+                
+                <!-- Koord. Öğretmen -->
+                <TextBlock Grid.Row="4" Grid.Column="0" 
+                          Text="Koord. Öğretmen:" 
+                          VerticalAlignment="Center"
+                          Margin="0,8"/>
+                <TextBox x:Name="txtKoordOgretmen"
+                        Grid.Row="4" Grid.Column="1" 
+                        Height="32"
+                        Margin="0,8"
+                        Padding="8,5"/>
+                
+                <!-- Butonlar -->
+                <StackPanel Grid.Row="5" Grid.Column="1" 
+                           Orientation="Horizontal"
+                           HorizontalAlignment="Right"
+                           Margin="0,15,0,0">
+                    <Button Content="➕ Yeni" 
+                           Width="90" Height="35"
+                           Background="#3498DB"
+                           Foreground="White"
+                           BorderThickness="0"
+                           Margin="5,0"
+                           Cursor="Hand"
+                           Click="BtnYeni_Click"/>
+                    <Button Content="🗑️ Sil" 
+                           Width="90" Height="35"
+                           Background="#E74C3C"
+                           Foreground="White"
+                           BorderThickness="0"
+                           Margin="5,0"
+                           Cursor="Hand"
+                           Click="BtnSil_Click"/>
+                    <Button Content="🗑️ Tümünü Sil" 
+                           Width="110" Height="35"
+                           Background="#C0392B"
+                           Foreground="White"
+                           BorderThickness="0"
+                           Margin="5,0"
+                           Cursor="Hand"
+                           Click="BtnTumunuSil_Click"/>
+                    <Button Content="💾 Kaydet" 
+                           Width="90" Height="35"
+                           Background="#27AE60"
+                           Foreground="White"
+                           BorderThickness="0"
+                           Margin="5,0"
+                           Cursor="Hand"
+                           Click="BtnKaydet_Click"/>
+                </StackPanel>
+                
+            </Grid>
+        </Border>
+        
+        <!-- Alt Kısım - DataGrid -->
+        <Border Grid.Row="1" Background="White" 
+               Padding="10"
+               CornerRadius="10">
+            <DataGrid x:Name="dgOkullar"
+                     AutoGenerateColumns="False"
+                     CanUserAddRows="False"
+                     SelectionMode="Single"
+                     SelectionChanged="DgOkullar_SelectionChanged">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="No" Binding="{Binding Id}" Width="50" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Okul Adı" Binding="{Binding OkulAdi}" Width="*" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="İl" Binding="{Binding Il}" Width="100" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Müdür" Binding="{Binding OkulMuduru}" Width="150" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Koord. Md. Yrd." Binding="{Binding KoordMudurYrd}" Width="150" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Koord. Öğretmen" Binding="{Binding KoordOgretmen}" Width="150" IsReadOnly="True"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+        
+    </Grid>
+    
+</UserControl>

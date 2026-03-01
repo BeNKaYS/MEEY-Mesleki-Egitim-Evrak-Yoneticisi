@@ -1,0 +1,94 @@
+<UserControl x:Class="MEEY.Controls.DevamsizlikGirisi"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="White">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        
+        <!-- Sol Panel: Filtreler -->
+        <Border Grid.Column="0" BorderBrush="#BDC3C7" BorderThickness="0,0,1,0" Padding="15">
+            <StackPanel>
+                <TextBlock Text="Devamsızlık Girişi" FontSize="16" FontWeight="Bold" Margin="0,0,0,20"/>
+                
+                <!-- İşletme Seçimi -->
+                <TextBlock Text="İşletme:" FontSize="12" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                <ComboBox x:Name="cmbIsletme" Height="30" Margin="0,0,0,15" 
+                         SelectionChanged="Isletme_Changed"/>
+                
+                <!-- Ay Seçimi -->
+                <TextBlock Text="Ay:" FontSize="12" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                <ComboBox x:Name="cmbAy" Height="30" Margin="0,0,0,10" 
+                         SelectionChanged="Ay_Changed"/>
+                
+                <!-- Yıl Seçimi -->
+                <TextBlock Text="Yıl:" FontSize="12" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                <ComboBox x:Name="cmbYil" Height="30" Margin="0,0,0,20" 
+                         SelectionChanged="Yil_Changed"/>
+                
+                <!-- Sembol Butonları -->
+                <TextBlock Text="Hızlı Sembol Seçimi:" FontSize="12" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                
+                <Border BorderBrush="#BDC3C7" BorderThickness="1" Padding="10" Margin="0,0,0,15">
+                    <StackPanel>
+                        <Button x:Name="btnX" Content="X - İşletmede" Height="35" Margin="0,0,0,5" 
+                               Background="#3498DB" Foreground="White" Click="Sembol_Click" Tag="X"/>
+                        <Button x:Name="btnO" Content="O - Okulda" Height="35" Margin="0,0,0,5" 
+                               Background="#2ECC71" Foreground="White" Click="Sembol_Click" Tag="O"/>
+                        <Button x:Name="btnT" Content="T - Tatil" Height="35" Margin="0,0,0,5" 
+                               Background="#95A5A6" Foreground="White" Click="Sembol_Click" Tag="T"/>
+                        <Button x:Name="btnI" Content="İ - İzinli" Height="35" Margin="0,0,0,5" 
+                               Background="#F39C12" Foreground="White" Click="Sembol_Click" Tag="İ"/>
+                        <Button x:Name="btnD" Content="D - Özürsüz Devamsız" Height="35" Margin="0,0,0,5" 
+                               Background="#E74C3C" Foreground="White" Click="Sembol_Click" Tag="D"/>
+                        <Button x:Name="btnH" Content="H - Hasta Sevkli" Height="35" Margin="0,0,0,5" 
+                               Background="#9B59B6" Foreground="White" Click="Sembol_Click" Tag="H"/>
+                        <Button x:Name="btnR" Content="R - Raporlu" Height="35" Margin="0,0,0,5" 
+                               Background="#1ABC9C" Foreground="White" Click="Sembol_Click" Tag="R"/>
+                        <Button x:Name="btnTemizle" Content="Temizle" Height="35" Margin="0,5,0,0" 
+                               Background="#ECF0F1" Foreground="#2C3E50" Click="Sembol_Click" Tag=""/>
+                    </StackPanel>
+                </Border>
+                
+                <!-- Kaydet Butonu -->
+                <Button Content="💾 Kaydet" Height="40" Background="#27AE60" Foreground="White" 
+                       FontSize="14" FontWeight="Bold" Click="Kaydet_Click"/>
+            </StackPanel>
+        </Border>
+        
+        <!-- Sağ Panel: Devamsızlık Tablosu -->
+        <Border Grid.Column="1" Padding="15">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                
+                <TextBlock Grid.Row="0" x:Name="txtBaslik" Text="Devamsızlık Tablosu" 
+                          FontSize="14" FontWeight="Bold" Margin="0,0,0,10"/>
+                
+                <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                    <DataGrid x:Name="dgDevamsizlik" 
+                             AutoGenerateColumns="False"
+                             CanUserAddRows="False"
+                             CanUserDeleteRows="False"
+                             SelectionMode="Single"
+                             GridLinesVisibility="All"
+                             HeadersVisibility="All"
+                             RowHeight="35"
+                             ColumnHeaderHeight="40"
+                             CurrentCellChanged="DataGrid_CurrentCellChanged">
+                    </DataGrid>
+                </ScrollViewer>
+                
+                <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,10,0,0">
+                    <TextBlock Text="Seçili Hücre: " FontSize="11" VerticalAlignment="Center"/>
+                    <TextBlock x:Name="txtSeciliHucre" Text="-" FontSize="11" FontWeight="Bold" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

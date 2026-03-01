@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Günlük Rehberlik Raporu</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 11px;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            background: white;
+            box-sizing: border-box;
+            border: none;
+        }
+
+        @media print {
+            body {
+                margin: 0;
+                padding: 0;
+                box-shadow: none;
+                border: none;
+            }
+        }
+
+        .main-box {
+            border: 1px solid #000;
+            width: 100%;
+            min-height: 260mm;
+            box-sizing: border-box;
+        }
+
+        .header {
+            border-bottom: 1px solid #000;
+            padding: 10px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .info-table {
+            width: 100%;
+            border-bottom: 1px solid #000;
+            border-collapse: collapse;
+        }
+
+        .info-table td {
+            padding: 6px 10px;
+            font-size: 11px;
+            border: none;
+        }
+
+        .notes-section {
+            border-bottom: 1px solid #000;
+            padding: 15px;
+            min-height: 350px;
+        }
+
+        .notes-section .title {
+            font-weight: bold;
+            font-size: 11px;
+            margin-bottom: 10px;
+        }
+
+        .notes-section .question {
+            font-size: 11px;
+            margin-top: 50px;
+        }
+
+        .signatures {
+            display: flex;
+            border-bottom: 1px solid #000;
+        }
+
+        .sig-box {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            font-size: 11px;
+        }
+
+        .sig-box:not(:last-child) {
+            border-right: 1px dashed #ccc;
+        }
+
+        .footer-desc {
+            padding: 10px;
+            font-size: 8px;
+            line-height: 1.4;
+            text-align: justify;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="main-box">
+
+        <div class="header">
+            İŞLETMELERDE MESLEK EĞİTİMİ GÜNLÜK REHBERLİK GÖREV FORMU
+        </div>
+
+        <table class="info-table">
+            <tr>
+                <td width="230">İşletmenin Adı</td>
+                <td width="10">:</td>
+                <td>[İşletme Adı]</td>
+            </tr>
+            <tr>
+                <td>İzlemede Sorumlu Olduğu Öğrenci Sayısı</td>
+                <td>:</td>
+                <td>[Sayı]</td>
+            </tr>
+            <tr>
+                <td>Meslek Alan Dalı</td>
+                <td>:</td>
+                <td>[Alan / Dal]</td>
+            </tr>
+            <tr>
+                <td>Görev Tarihi</td>
+                <td>:</td>
+                <td>[Tarih]</td>
+            </tr>
+        </table>
+
+        <div class="notes-section">
+            <div class="title">Aylık Rehberlik Formuna Göre:</div>
+
+            <div class="question" style="margin-top: 15px;">
+                İşletmede öğrenim gören öğrencilerin eğitimini olumsuz yönde etkileyen hususlar (varsa yazınız):<br><br>
+                .......................................................................................................................................
+            </div>
+
+            <div class="question">
+                Belirlenen aksaklıklarla ilgili yapılan rehberlik ve alınan önlemler:<br><br>
+                .......................................................................................................................................
+            </div>
+
+            <div class="question">
+                Aylık rehberlik formunda belirtilmesinde yarar görülen hususlar:<br><br>
+                .......................................................................................................................................
+            </div>
+        </div>
+
+        <div class="signatures">
+            <div class="sig-box">
+                <strong>İşletme Eğitim Yetkilisi</strong><br><br><br><br>İmza
+            </div>
+            <div class="sig-box">
+                <strong>Koordinatör Öğretmen</strong><br><br>[Öğretmen Adı]<br><br>İmza
+            </div>
+            <div class="sig-box">
+                <strong>Koordinatör Müdür Yardımcısı</strong><br><br>[Müdür Yardımcısı Adı]<br><br>İmza
+            </div>
+        </div>
+
+        <div class="footer-desc">
+            Açıklamalar: Bu form koordinatör öğretmen tarafından her görev için görev haftası başında koordinatör müdür
+            yardımcısından alınır. Görev sonrasında okula geldiği gün içinde imzalanıp tamamlanmış olarak koordinatör
+            müdür yardımcısına teslim edilir. Bu form Aylık Rehberlik Formu'nun doldurulmasında esas alınır ve rapora
+            eklenir.
+        </div>
+
+    </div>
+
+</body>
+
+</html>

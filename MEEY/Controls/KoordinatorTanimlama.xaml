@@ -1,0 +1,124 @@
+<UserControl x:Class="MEEY.Controls.KoordinatorTanimlama"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="White">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Form Alanı -->
+        <Grid Grid.Row="0" Margin="15">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            
+            <!-- Okul -->
+            <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,10,0">
+                <TextBlock Text="Okul:" FontSize="12" Margin="0,5,0,2"/>
+                <ComboBox x:Name="cmbOkul" Height="30" FontSize="12"/>
+            </StackPanel>
+            
+            <!-- Öğretmen -->
+            <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,10,0">
+                <TextBlock Text="Öğretmen:" FontSize="12" Margin="0,10,0,2"/>
+                <ComboBox x:Name="cmbOgretmen" Height="30" FontSize="12"/>
+            </StackPanel>
+            
+            <!-- İşletme -->
+            <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,0,10,0">
+                <TextBlock Text="İşletme:" FontSize="12" Margin="0,10,0,2"/>
+                <ComboBox x:Name="cmbIsletme" Height="30" FontSize="12"/>
+            </StackPanel>
+
+            <!-- İşletme Yetkilisi -->
+            <StackPanel Grid.Row="3" Grid.Column="0" Margin="0,0,10,0">
+                <TextBlock Text="İşletme Yetkilisi:" FontSize="12" Margin="0,10,0,2"/>
+                <TextBox x:Name="txtIsletmeYetkilisi" Height="30" FontSize="12" VerticalContentAlignment="Center" Padding="4,0"/>
+            </StackPanel>
+            
+            <!-- Müdür Yrd. -->
+            <StackPanel Grid.Row="0" Grid.Column="1" Margin="10,0,0,0">
+                <TextBlock Text="Müdür Yrd.:" FontSize="12" Margin="0,5,0,2"/>
+                <ComboBox x:Name="cmbMudurYrd" Height="30" FontSize="12"/>
+            </StackPanel>
+            
+            <!-- Gün -->
+            <StackPanel Grid.Row="1" Grid.Column="1" Margin="10,0,0,0">
+                <TextBlock Text="Gün:" FontSize="12" Margin="0,10,0,2"/>
+                <ComboBox x:Name="cmbGun" Height="30" FontSize="12">
+                    <ComboBoxItem Content="Pazartesi"/>
+                    <ComboBoxItem Content="Salı"/>
+                    <ComboBoxItem Content="Çarşamba"/>
+                    <ComboBoxItem Content="Perşembe"/>
+                    <ComboBoxItem Content="Cuma"/>
+                    <ComboBoxItem Content="Cumartesi"/>
+                    <ComboBoxItem Content="Pazar"/>
+                </ComboBox>
+            </StackPanel>
+
+            <!-- Koordinatörlük Türü -->
+            <StackPanel Grid.Row="2" Grid.Column="1" Margin="10,0,0,0">
+                <TextBlock Text="Koordinatörlük Türü:" FontSize="12" Margin="0,10,0,2"/>
+                <ComboBox x:Name="cmbKoordTuru" Height="30" FontSize="12" SelectedIndex="0">
+                    <ComboBoxItem Content="MESEM"/>
+                    <ComboBoxItem Content="ÖRGÜN"/>
+                </ComboBox>
+            </StackPanel>
+            
+            <!-- Butonlar -->
+            <UniformGrid Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" 
+                        Rows="1" Columns="4" Margin="0,20,0,0" Height="35">
+                <Button Content="➕ Yeni" Margin="0,0,5,0" 
+                       Background="#27AE60" Foreground="White" 
+                       BorderThickness="0" Cursor="Hand"
+                       Click="BtnYeni_Click"/>
+                <Button Content="🗑️ Sil" Margin="5,0" 
+                       Background="#E74C3C" Foreground="White" 
+                       BorderThickness="0" Cursor="Hand"
+                       Click="BtnSil_Click"/>
+                <Button Content="🗑️ Tümünü Sil" Margin="5,0" 
+                       Background="#C0392B" Foreground="White" 
+                       BorderThickness="0" Cursor="Hand"
+                       Click="BtnTumunuSil_Click"/>
+                <Button Content="💾 Kaydet" Margin="5,0,0,0" 
+                       Background="#3498DB" Foreground="White" 
+                       BorderThickness="0" Cursor="Hand"
+                       Click="BtnKaydet_Click"/>
+            </UniformGrid>
+            
+        </Grid>
+        
+        <!-- DataGrid -->
+        <DataGrid x:Name="dgKoordinatorler" 
+                 Grid.Row="1" 
+                 Margin="15,0,15,15"
+                 AutoGenerateColumns="False"
+                 CanUserAddRows="False"
+                 SelectionMode="Single"
+                 SelectionChanged="DgKoordinatorler_SelectionChanged">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="No" Binding="{Binding Id}" Width="40" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Okul" Binding="{Binding Okul}" Width="*" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Öğretmen" Binding="{Binding Ogretmen}" Width="*" IsReadOnly="True"/>
+                <DataGridTextColumn Header="İşletme" Binding="{Binding Isletme}" Width="*" IsReadOnly="True"/>
+                <DataGridTextColumn Header="İşletme Yetkilisi" Binding="{Binding IsletmeYetkilisi}" Width="*" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Müdür Yrd." Binding="{Binding MudurYrd}" Width="*" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Gün" Binding="{Binding Gun}" Width="65" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Tür" Binding="{Binding KoordTuru}" Width="65" IsReadOnly="True"/>
+
+            </DataGrid.Columns>
+        </DataGrid>
+        
+    </Grid>
+</UserControl>

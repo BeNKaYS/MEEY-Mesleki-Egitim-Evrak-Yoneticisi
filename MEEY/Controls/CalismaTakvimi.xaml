@@ -1,0 +1,103 @@
+<UserControl x:Class="MEEY.Controls.CalismaTakvimi"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="White">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Form Alanı -->
+        <Grid Grid.Row="0" Margin="15">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="200"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            
+            <!-- Yıl -->
+            <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,10,0">
+                <TextBlock Text="Yıl:" FontSize="12" Margin="0,5,0,2"/>
+                <ComboBox x:Name="cmbYil" Height="30" FontSize="12"/>
+            </StackPanel>
+            
+            <!-- Otomatik Çek Butonu -->
+            <Button Grid.Row="0" Grid.Column="1" 
+                   Content="Bu Yılı Otomatik Çek" 
+                   Height="30" 
+                   VerticalAlignment="Bottom"
+                   Margin="10,0"
+                   Background="#9B59B6" 
+                   Foreground="White" 
+                   BorderThickness="0" 
+                   Cursor="Hand"
+                   Click="BtnOtomatikCek_Click"/>
+            
+            <!-- Başlangıç -->
+            <StackPanel Grid.Row="0" Grid.Column="2" Margin="10,0">
+                <TextBlock Text="Başlangıç (gg.aa.yyyy):" FontSize="12" Margin="0,5,0,2"/>
+                <TextBox x:Name="txtBaslangic" Height="30" FontSize="12" VerticalContentAlignment="Center"/>
+            </StackPanel>
+            
+            <!-- Bitiş -->
+            <StackPanel Grid.Row="0" Grid.Column="3" Margin="10,0,0,0">
+                <TextBlock Text="Bitiş (gg.aa.yyyy):" FontSize="12" Margin="0,5,0,2"/>
+                <TextBox x:Name="txtBitis" Height="30" FontSize="12" VerticalContentAlignment="Center"/>
+            </StackPanel>
+            
+            <!-- Açıklama -->
+            <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" Margin="0">
+                <TextBlock Text="Açıklama:" FontSize="12" Margin="0,10,0,2"/>
+                <TextBox x:Name="txtAciklama" Height="30" FontSize="12"/>
+            </StackPanel>
+            
+            <!-- Butonlar -->
+            <UniformGrid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" 
+                        Rows="1" Columns="4" Margin="0,15,0,0" Height="35">
+                <Button Content="➕ Yeni" Margin="0,0,5,0" 
+                       Background="#27AE60" Foreground="White" 
+                       BorderThickness="0" Cursor="Hand"
+                       Click="BtnYeni_Click"/>
+                <Button Content="🗑️ Sil" Margin="5,0" 
+                       Background="#E74C3C" Foreground="White" 
+                       BorderThickness="0" Cursor="Hand"
+                       Click="BtnSil_Click"/>
+                <Button Content="🗑️ Tümünü Sil" Margin="5,0" 
+                       Background="#C0392B" Foreground="White" 
+                       BorderThickness="0" Cursor="Hand"
+                       Click="BtnTumunuSil_Click"/>
+                <Button Content="💾 Kaydet" Margin="5,0,0,0" 
+                       Background="#3498DB" Foreground="White" 
+                       BorderThickness="0" Cursor="Hand"
+                       Click="BtnKaydet_Click"/>
+            </UniformGrid>
+            
+        </Grid>
+        
+        <!-- DataGrid -->
+        <DataGrid x:Name="dgTatiller" 
+                 Grid.Row="1" 
+                 Margin="15,0,15,15"
+                 AutoGenerateColumns="False"
+                 CanUserAddRows="False"
+                 SelectionMode="Single"
+                 SelectionChanged="DgTatiller_SelectionChanged">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="No" Binding="{Binding Id}" Width="50" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Yıl" Binding="{Binding Yil}" Width="80" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Başlangıç" Binding="{Binding Baslangic, StringFormat=dd.MM.yyyy}" Width="120" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Bitiş" Binding="{Binding Bitis, StringFormat=dd.MM.yyyy}" Width="120" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Gün Sayısı" Binding="{Binding GunSayisi}" Width="100" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Açıklama" Binding="{Binding Aciklama}" Width="*" IsReadOnly="True"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        
+    </Grid>
+</UserControl>

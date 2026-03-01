@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Not Çizelgesi Raporu</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 11px;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            background: white;
+            box-sizing: border-box;
+            border: none;
+        }
+
+        @media print {
+            body {
+                margin: 0;
+                padding: 0;
+                box-shadow: none;
+                border: none;
+            }
+        }
+
+        .header {
+            text-align: center;
+            font-weight: bold;
+            font-size: 14px;
+            border: 1px solid #000;
+            padding: 10px;
+            margin-bottom: 8px;
+        }
+
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 8px;
+        }
+
+        .info-table td {
+            border: 1px solid #000;
+            padding: 4px 6px;
+        }
+
+        .info-table .label {
+            background-color: #f2f2f2;
+            font-weight: bold;
+            width: 15%;
+        }
+
+        .main-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 8px;
+            table-layout: fixed;
+        }
+
+        .main-table th,
+        .main-table td {
+            border: 1px solid #000;
+            padding: 2px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .main-table .group-header {
+            background-color: #e6e6e6;
+            font-weight: bold;
+            font-size: 11px;
+            padding: 6px;
+        }
+
+        .main-table .sub-header {
+            font-weight: bold;
+            font-size: 10px;
+            background-color: #fff;
+            padding: 4px;
+        }
+
+        .dikey {
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            height: 80px;
+            font-size: 10px;
+            padding: 2px;
+        }
+
+        .signatures {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 8px;
+        }
+
+        .signatures td {
+            border: 1px solid #000;
+            width: 25%;
+            text-align: center;
+            padding: 10px;
+            height: 90px;
+            vertical-align: top;
+        }
+
+        .sig-title {
+            font-weight: bold;
+            font-size: 12px;
+            margin-bottom: 25px;
+        }
+
+        .sig-sub {
+            font-size: 11px;
+            margin-top: 15px;
+        }
+
+        .footer-note {
+            border: 1px solid #000;
+            padding: 8px;
+            font-size: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        İŞLETMELERDE MESLEK EĞİTİMİ GÖREN ÖĞRENCİLERE AİT BİRİNCİ DÖNEM PUAN FİŞİ
+    </div>
+
+    <table class="info-table">
+        <tr>
+            <td class="label">Okul/Kurum Adı :</td>
+            <td>[Okul/Kurum Adı]</td>
+            <td class="label">Dersin Adı :</td>
+            <td>İşletmelerde Meslek Eğitimi</td>
+        </tr>
+        <tr>
+            <td class="label">Öğretim Yılı :</td>
+            <td>2026-2027</td>
+            <td class="label">Tarih :</td>
+            <td>01.01.2027</td>
+        </tr>
+        <tr>
+            <td class="label">İşletmenin Adı :</td>
+            <td>[İşletme Adı]</td>
+            <td class="label">Koord. Öğrt. :</td>
+            <td>[Koordinatör Öğretmen Adı]</td>
+        </tr>
+    </table>
+
+    <!-- Sütun genişliklerini sabitliyoruz -->
+    <table class="main-table">
+        <colgroup>
+            <col style="width: 2.5%;">
+            <col style="width: 3.5%;">
+            <col style="width: 14%;">
+            <col style="width: 12%;">
+            <col style="width: 3%;">
+            <col style="width: 3%;">
+            <col style="width: 3%;">
+            <col style="width: 3%;">
+            <col style="width: 3%;">
+            <col style="width: 3%;">
+            <col style="width: 3%;">
+            <col style="width: 3%;">
+            <col style="width: 3%;">
+            <col style="width: 3%;">
+            <col style="width: 3%;">
+            <col style="width: 3%;">
+            <col style="width: 4.5%;">
+            <col style="width: 4.5%;">
+            <col style="width: 3.5%;">
+            <col style="width: 3.5%;">
+            <col style="width: 3.5%;">
+        </colgroup>
+        <tr>
+            <th colspan="4" class="group-header">Öğrencinin</th>
+            <th colspan="12" class="group-header">İşletmede Verilen Puanlar</th>
+            <th colspan="2" class="group-header">Okulda<br>Verilen<br>Puanlar</th>
+            <th colspan="3" class="group-header">Dönem<br>Başarısı</th>
+        </tr>
+        <tr>
+            <th class="dikey">Sınıf</th>
+            <th class="dikey">Numarası</th>
+            <th class="sub-header">Adı Soyadı</th>
+            <th class="sub-header">Alan Dalı</th>
+            <th colspan="3" class="sub-header">Temrin</th>
+            <th colspan="3" class="sub-header">İş-Hizmet</th>
+            <th colspan="3" class="sub-header">Proje</th>
+            <th colspan="3" class="sub-header">Deney</th>
+            <th class="dikey">Telafi Eğitimi<br>Puanı(*)</th>
+            <th class="dikey">Beceri Sınav<br>Puanı(*)</th>
+            <th class="dikey">Dönem<br>Puan Ort.</th>
+            <th class="dikey">Rakamla</th>
+            <th class="dikey">Yazıyla</th>
+        </tr>
+        <!-- Öğrenci 1 Satırı -->
+        <tr>
+            <td>12/A</td>
+            <td>101</td>
+            <td style="text-align: left; padding-left: 5px;">Ahmet Yılmaz</td>
+            <td style="text-align: left; padding-left: 5px;">Bilişim Tek. - Web Programcılığı</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <!-- Öğrenci 2 Satırı -->
+        <tr>
+            <td>12/A</td>
+            <td>102</td>
+            <td style="text-align: left; padding-left: 5px;">Ayşe Demir</td>
+            <td style="text-align: left; padding-left: 5px;">Elektrik - Pano Montörlüğü</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <!-- Boş Satırlar için Örnekler -->
+        <tr>
+            <td style="height: 14px;"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td style="height: 14px;"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td style="height: 14px;"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+
+    <table class="signatures">
+        <tr>
+            <td>
+                <div class="sig-title">Usta Öğretici / İşletme Yetkilisi</div>
+                <div class="sig-sub">[İşletme Yetkilisi İsim]</div>
+                <div class="sig-sub">Kaşe - İmza</div>
+            </td>
+            <td>
+                <div class="sig-title">Eğitici Personel</div>
+                <div class="sig-sub">[Eğitici Personel İsim]</div>
+                <div class="sig-sub">Kaşe - İmza</div>
+            </td>
+            <td>
+                <div class="sig-title">Koordinatör Müdür Yardımcısı</div>
+                <div class="sig-sub">[Müdür Yardımcısı İsim]</div>
+                <div class="sig-sub">İmza</div>
+            </td>
+            <td>
+                <div class="sig-title">Okul/Kurum Müdürü</div>
+                <div class="sig-sub">[Okul Müdürü İsim]</div>
+                <div class="sig-sub">İmza</div>
+            </td>
+        </tr>
+    </table>
+
+    <div class="footer-note">
+        <strong>AÇIKLAMA : </strong> (*) işaretli bölümler okul/kurum müdürlüğünce doldurulacak ve puan ortalaması
+        alınarak dönem ortalaması belirlenecektir.
+    </div>
+
+</body>
+
+</html>
