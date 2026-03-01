@@ -1,0 +1,61 @@
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Package
+    Name="MEEY - Mesleki Eğitim Evrak Yöneticisi"
+    Manufacturer="Sercan Özdemir"
+    Version="1.0.2"
+    UpgradeCode="A98E6D15-8C0F-4C48-9805-8243A0B27A65"
+    Scope="perMachine">
+
+    <SummaryInformation Description="MEEY Windows Setup" />
+    <MajorUpgrade DowngradeErrorMessage="Daha yeni bir sürüm zaten kurulu." />
+    <MediaTemplate EmbedCab="yes" />
+    <Icon Id="MEEYIcon" SourceFile="$(sys.SOURCEFILEDIR)..\MEEY\ico\MEEY_desktop.ico" />
+    <Property Id="ARPPRODUCTICON" Value="MEEYIcon" />
+    <Property Id="ARPURLINFOABOUT" Value="https://github.com/BeNKaYS/MEEY-Mesleki-Egitim-Evrak-Yoneticisi" />
+    <Property Id="ARPHELPLINK" Value="https://github.com/BeNKaYS/MEEY-Mesleki-Egitim-Evrak-Yoneticisi/issues" />
+
+    <StandardDirectory Id="ProgramFiles64Folder">
+      <Directory Id="INSTALLFOLDER" Name="MEEY" />
+    </StandardDirectory>
+
+    <StandardDirectory Id="ProgramMenuFolder">
+      <Directory Id="ApplicationProgramsFolder" Name="MEEY" />
+    </StandardDirectory>
+
+    <Feature Id="MainFeature" Title="MEEY" Level="1">
+      <ComponentGroupRef Id="AppFiles" />
+      <ComponentRef Id="ApplicationShortcuts" />
+    </Feature>
+  </Package>
+
+  <Fragment>
+    <ComponentGroup Id="AppFiles" Directory="INSTALLFOLDER">
+      <Files Include="$(sys.SOURCEFILEDIR)..\MEEY\bin\Release\net6.0-windows\win-x64\publish\**" />
+      <Files Include="$(sys.SOURCEFILEDIR)..\MEEY.db" />
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment>
+    <Component Id="ApplicationShortcuts" Directory="ApplicationProgramsFolder" Guid="*">
+      <Shortcut
+        Id="StartMenuShortcut"
+        Name="MEEY"
+        Description="MEEY - Mesleki Eğitim Evrak Yöneticisi"
+        Target="[INSTALLFOLDER]MEEY.exe"
+        WorkingDirectory="INSTALLFOLDER"
+        Icon="MEEYIcon" />
+
+      <Shortcut
+        Id="DesktopShortcut"
+        Directory="DesktopFolder"
+        Name="MEEY"
+        Description="MEEY - Mesleki Eğitim Evrak Yöneticisi"
+        Target="[INSTALLFOLDER]MEEY.exe"
+        WorkingDirectory="INSTALLFOLDER"
+        Icon="MEEYIcon" />
+
+      <RemoveFolder Id="RemoveProgramsFolder" Directory="ApplicationProgramsFolder" On="uninstall" />
+      <RegistryValue Root="HKLM" Key="Software\MEEY" Name="Installed" Type="integer" Value="1" KeyPath="yes" />
+    </Component>
+  </Fragment>
+</Wix>
