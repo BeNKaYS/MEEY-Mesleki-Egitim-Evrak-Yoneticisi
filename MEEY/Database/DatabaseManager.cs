@@ -8,8 +8,31 @@ namespace MEEY.Database
     public class DatabaseManager
     {
         private static readonly CultureInfo TrCulture = new CultureInfo("tr-TR");
-        private static string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MEEY.db");
-        private static string connectionString = $"Data Source={dbPath};Version=3;";
+        private static readonly string dbDirectory;
+        private static readonly string dbPath;
+        private static readonly string connectionString;
+
+        static DatabaseManager()
+        {
+            string localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            dbDirectory = Path.Combine(localAppData, "MEEY");
+            Directory.CreateDirectory(dbDirectory);
+
+            dbPath = Path.Combine(dbDirectory, "MEEY.db");
+            connectionString = $"Data Source={dbPath};Version=3;";
+
+            string legacyDbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MEEY.db");
+            if (!File.Exists(dbPath) && File.Exists(legacyDbPath))
+            {
+                try
+                {
+                    File.Copy(legacyDbPath, dbPath, true);
+                }
+                catch
+                {
+                }
+            }
+        }
 
         public static string NormalizeText(string? value)
         {
@@ -24,7 +47,7 @@ namespace MEEY.Database
             // Debug: Yolu dosyaya yaz
             try
             {
-                File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "db_path_log.txt"), 
+                File.WriteAllText(Path.Combine(dbDirectory, "db_path_log.txt"), 
                     $"Veritabanı Yolu: {dbPath}\nZaman: {DateTime.Now}\nDosya Var: {File.Exists(dbPath)}");
             }
             catch { }

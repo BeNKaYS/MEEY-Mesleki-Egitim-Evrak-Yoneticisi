@@ -162,8 +162,9 @@ namespace MEEY.Database
                     return;
 
                 string targetFile = DatabaseManager.GetDatabaseFilePath();
+                string targetDirectory = Path.GetDirectoryName(targetFile) ?? AppDomain.CurrentDomain.BaseDirectory;
                 string backupFile = Path.Combine(
-                    AppDomain.CurrentDomain.BaseDirectory,
+                    targetDirectory,
                     $"MEEY_AutoBackup_{DateTime.Now:yyyyMMdd_HHmmss}.db");
 
                 if (File.Exists(targetFile))
