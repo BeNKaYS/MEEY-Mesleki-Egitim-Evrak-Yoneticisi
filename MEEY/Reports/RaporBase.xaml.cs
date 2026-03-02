@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using Microsoft.Web.WebView2.Core;
 using MEEY.Database;
 
 namespace MEEY.Reports
@@ -43,6 +44,7 @@ namespace MEEY.Reports
         private ObservableCollection<DataItem> dataItems;
         private string reportType;
         private string? currentPdfPath;
+        private CoreWebView2Environment? pdfPreviewEnvironment;
 
         private readonly List<(string Sorun, string Cozum, string Sonuc)> GunlukTaslaklar = new()
         {
@@ -1110,61 +1112,35 @@ namespace MEEY.Reports
                 // Önce panel içinde önizleme göstermeyi dene
                 var previewShown = await ShowPdfPreviewAsync(tempPath);
 
-                // WebView2 başarısız olursa harici görüntüleyiciyi yedek olarak kullan
+                // WebView2 başarısız olursa uygulama içinde bilgilendirme göster
                 if (!previewShown)
                 {
-                    try
+                    ShowInfoPanel();
+                    PreviewPanel.Children.Clear();
+
+                    var warningText = new TextBlock
                     {
-                        Process.Start(new ProcessStartInfo
-                        {
-                            FileName = tempPath,
-                            UseShellExecute = true
-                        });
+                        Text = "⚠ Rapor oluşturuldu ancak uygulama içi önizleme başlatılamadı.",
+                        FontSize = 13,
+                        Foreground = System.Windows.Media.Brushes.OrangeRed,
+                        Margin = new Thickness(20),
+                        TextWrapping = TextWrapping.Wrap,
+                        HorizontalAlignment = HorizontalAlignment.Center,
+                        VerticalAlignment = VerticalAlignment.Center,
+                        FontWeight = FontWeights.SemiBold
+                    };
+                    PreviewPanel.Children.Add(warningText);
 
-                        ShowInfoPanel();
-                        PreviewPanel.Children.Clear();
-
-                        var successText = new TextBlock
-                        {
-                            Text = "✓ Rapor başarıyla oluşturuldu!\n\nÖnizleyici başlatılamadığı için PDF varsayılan görüntüleyicide açıldı.",
-                            FontSize = 14,
-                            Foreground = System.Windows.Media.Brushes.Green,
-                            Margin = new Thickness(20),
-                            TextWrapping = TextWrapping.Wrap,
-                            HorizontalAlignment = HorizontalAlignment.Center,
-                            VerticalAlignment = VerticalAlignment.Center,
-                            FontWeight = FontWeights.SemiBold
-                        };
-                        PreviewPanel.Children.Add(successText);
-
-                        var pathText = new TextBlock
-                        {
-                            Text = $"Dosya konumu:\n{tempPath}",
-                            FontSize = 11,
-                            Foreground = System.Windows.Media.Brushes.Gray,
-                            Margin = new Thickness(20, 20, 20, 0),
-                            TextWrapping = TextWrapping.Wrap,
-                            HorizontalAlignment = HorizontalAlignment.Center
-                        };
-                        PreviewPanel.Children.Add(pathText);
-                    }
-                    catch (Exception ex)
+                    var pathText = new TextBlock
                     {
-                        ShowInfoPanel();
-                        PreviewPanel.Children.Clear();
-
-                        var errorText = new TextBlock
-                        {
-                            Text = $"PDF oluşturuldu ancak açılamadı: {ex.Message}\n\nDosya konumu:\n{tempPath}",
-                            FontSize = 12,
-                            Foreground = System.Windows.Media.Brushes.Orange,
-                            Margin = new Thickness(20),
-                            TextWrapping = TextWrapping.Wrap,
-                            HorizontalAlignment = HorizontalAlignment.Center,
-                            VerticalAlignment = VerticalAlignment.Center
-                        };
-                        PreviewPanel.Children.Add(errorText);
-                    }
+                        Text = $"Dosya konumu:\n{tempPath}",
+                        FontSize = 11,
+                        Foreground = System.Windows.Media.Brushes.Gray,
+                        Margin = new Thickness(20, 0, 20, 0),
+                        TextWrapping = TextWrapping.Wrap,
+                        HorizontalAlignment = HorizontalAlignment.Center
+                    };
+                    PreviewPanel.Children.Add(pathText);
                 }
             }
             catch (Exception ex)
@@ -1363,9 +1339,19 @@ namespace MEEY.Reports
                 ShowPdfViewer();
 
                 if (PdfPreviewBrowser.CoreWebView2 == null)
-                    await PdfPreviewBrowser.EnsureCoreWebView2Async();
+                {
+                    if (pdfPreviewEnvironment == null)
+                    {
+                        var appData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+                        var webViewPath = Path.Combine(appData, "MEEY", "WebView2", "ReportPreview");
+                        Directory.CreateDirectory(webViewPath);
+                        pdfPreviewEnvironment = await CoreWebView2Environment.CreateAsync(userDataFolder: webViewPath);
+                    }
 
-                PdfPreviewBrowser.Source = new Uri(pdfPath);
+                    await PdfPreviewBrowser.EnsureCoreWebView2Async(pdfPreviewEnvironment);
+                }
+
+                PdfPreviewBrowser.Source = new Uri(Path.GetFullPath(pdfPath));
                 return true;
             }
             catch
