@@ -9,6 +9,8 @@ namespace MEEY.Controls
 {
     public partial class MetinEditorHost : UserControl
     {
+        private CoreWebView2Environment? webViewEnvironment;
+
         public MetinEditorHost()
         {
             InitializeComponent();
@@ -16,21 +18,46 @@ namespace MEEY.Controls
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            await EditorWebView.EnsureCoreWebView2Async();
+            try
+            {
+                string webViewDataPath = Path.Combine(GetEditorDataRoot(), "WebView2");
+                Directory.CreateDirectory(webViewDataPath);
+                webViewEnvironment = await CoreWebView2Environment.CreateAsync(userDataFolder: webViewDataPath);
+                await EditorWebView.EnsureCoreWebView2Async(webViewEnvironment);
 
-          var assetsPath = ResolveAssetsPath();
-          if (string.IsNullOrWhiteSpace(assetsPath))
-          {
-            EditorWebView.NavigateToString(BuildMissingAssetsHtml());
-            return;
-          }
+                var assetsPath = ResolveAssetsPath();
+                if (string.IsNullOrWhiteSpace(assetsPath))
+                {
+                    EditorWebView.NavigateToString(BuildMissingAssetsHtml());
+                    return;
+                }
 
-          EditorWebView.CoreWebView2.SetVirtualHostNameToFolderMapping(
-            "appassets",
-            assetsPath,
-            CoreWebView2HostResourceAccessKind.Allow);
+                EditorWebView.CoreWebView2.SetVirtualHostNameToFolderMapping(
+                    "appassets",
+                    assetsPath,
+                    CoreWebView2HostResourceAccessKind.Allow);
 
-            EditorWebView.NavigateToString(BuildEditorHtml());
+                EditorWebView.NavigateToString(BuildEditorHtml());
+            }
+            catch (Exception ex)
+            {
+                EditorWebView.NavigateToString(BuildEditorInitErrorHtml(ex.Message));
+            }
+        }
+
+        public static string GetEditorDataRoot()
+        {
+            string localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            string root = Path.Combine(localAppData, "MEEY");
+            Directory.CreateDirectory(root);
+            return root;
+        }
+
+        public static string GetEditorRecordsPath()
+        {
+            string path = Path.Combine(GetEditorDataRoot(), "Assets", "EditorKayitlari");
+            Directory.CreateDirectory(path);
+            return path;
         }
 
         private static string BuildEditorHtml()
@@ -311,11 +338,7 @@ namespace MEEY.Controls
 
         private void SaveHtmlDialog(string htmlContent)
         {
-            var saveDir = System.IO.Path.Combine(AppContext.BaseDirectory, "Assets", "EditorKayitlari");
-            if (!System.IO.Directory.Exists(saveDir))
-            {
-                System.IO.Directory.CreateDirectory(saveDir);
-            }
+            var saveDir = GetEditorRecordsPath();
 
             var dialog = new Microsoft.Win32.SaveFileDialog
             {
@@ -334,11 +357,7 @@ namespace MEEY.Controls
 
         private void SaveDocDialog(string htmlContent)
         {
-            var saveDir = System.IO.Path.Combine(AppContext.BaseDirectory, "Assets", "EditorKayitlari");
-            if (!System.IO.Directory.Exists(saveDir))
-            {
-                System.IO.Directory.CreateDirectory(saveDir);
-            }
+            var saveDir = GetEditorRecordsPath();
 
             var dialog = new Microsoft.Win32.SaveFileDialog
             {
@@ -357,11 +376,7 @@ namespace MEEY.Controls
 
         private async System.Threading.Tasks.Task SavePdfDialogAsync(string htmlContent)
         {
-            var saveDir = System.IO.Path.Combine(AppContext.BaseDirectory, "Assets", "EditorKayitlari");
-            if (!System.IO.Directory.Exists(saveDir))
-            {
-                System.IO.Directory.CreateDirectory(saveDir);
-            }
+            var saveDir = GetEditorRecordsPath();
 
             var dialog = new Microsoft.Win32.SaveFileDialog
             {
@@ -375,7 +390,14 @@ namespace MEEY.Controls
             {
                 try
                 {
-                    await HiddenWebView.EnsureCoreWebView2Async();
+                    if (webViewEnvironment == null)
+                    {
+                        string webViewDataPath = Path.Combine(GetEditorDataRoot(), "WebView2");
+                        Directory.CreateDirectory(webViewDataPath);
+                        webViewEnvironment = await CoreWebView2Environment.CreateAsync(userDataFolder: webViewDataPath);
+                    }
+
+                    await HiddenWebView.EnsureCoreWebView2Async(webViewEnvironment);
                     
                     bool isNavigated = false;
                     EventHandler<CoreWebView2NavigationCompletedEventArgs> navHandler = null;
@@ -406,6 +428,32 @@ namespace MEEY.Controls
                 }
             }
         }
+
+                private static string BuildEditorInitErrorHtml(string errorMessage)
+                {
+                        var safeMessage = System.Net.WebUtility.HtmlEncode(errorMessage);
+                        return $@"<!doctype html>
+<html lang='tr'>
+<head>
+    <meta charset='utf-8' />
+    <style>
+        body {{ margin:0; font-family: Segoe UI, sans-serif; background:#f8f9fa; }}
+        .wrap {{ height:100vh; display:flex; align-items:center; justify-content:center; color:#2c3e50; }}
+        .card {{ background:white; border:1px solid #d0d7de; border-radius:10px; padding:24px; max-width:760px; }}
+        .err {{ color:#b42318; }}
+    </style>
+</head>
+<body>
+    <div class='wrap'>
+        <div class='card'>
+            <h3>Metin Editörü başlatılamadı</h3>
+            <p>WebView2 başlatılırken bir hata oluştu.</p>
+            <p class='err'><b>Detay:</b> {safeMessage}</p>
+        </div>
+    </div>
+</body>
+</html>";
+                }
 
         private static string BuildMissingAssetsHtml()
         {

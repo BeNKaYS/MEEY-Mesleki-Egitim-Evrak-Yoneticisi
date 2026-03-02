@@ -869,7 +869,7 @@ namespace MEEY
             // Kayıtları Yükle
             try
             {
-                var recordsPath = System.IO.Path.Combine(AppContext.BaseDirectory, "Assets", "EditorKayitlari");
+                var recordsPath = MetinEditorHost.GetEditorRecordsPath();
                 
                 // Klasör yoksa ilk boş bir klasör oluşturalım
                 if (!System.IO.Directory.Exists(recordsPath))

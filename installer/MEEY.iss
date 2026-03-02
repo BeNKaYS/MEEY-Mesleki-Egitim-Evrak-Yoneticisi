@@ -1,5 +1,5 @@
 #define MyAppName "MEEY - Mesleki Eğitim Evrak Yöneticisi"
-#define MyAppVersion "1.0.4"
+#define MyAppVersion "1.0.5"
 #define MyAppPublisher "Sercan Özdemir"
 #define MyAppURL "https://github.com/BeNKaYS/MEEY-Mesleki-Egitim-Evrak-Yoneticisi"
 #define MyAppExeName "MEEY.exe"
@@ -17,7 +17,7 @@ DefaultDirName={autopf}\MEEY
 DefaultGroupName=MEEY
 DisableProgramGroupPage=yes
 OutputDir=..\PublishOutput\Installer
-OutputBaseFilename=MEEY-Setup-v1.0.4-win-x64
+OutputBaseFilename=MEEY-Setup-v1.0.5-win-x64
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
