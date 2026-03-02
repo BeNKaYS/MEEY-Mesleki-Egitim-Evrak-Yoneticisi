@@ -1,5 +1,5 @@
 #define MyAppName "MEEY - Mesleki Eğitim Evrak Yöneticisi"
-#define MyAppVersion "1.0.8"
+#define MyAppVersion "1.0.9"
 #define MyAppPublisher "Sercan Özdemir"
 #define MyAppURL "https://github.com/BeNKaYS/MEEY-Mesleki-Egitim-Evrak-Yoneticisi"
 #define MyAppExeName "MEEY.exe"
@@ -17,7 +17,7 @@ DefaultDirName={autopf}\MEEY
 DefaultGroupName=MEEY
 DisableProgramGroupPage=yes
 OutputDir=..\PublishOutput\Installer
-OutputBaseFilename=MEEY-Setup-v1.0.8-win-x64
+OutputBaseFilename=MEEY-Setup-v1.0.9-win-x64
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
@@ -42,3 +42,41 @@ Name: "{autodesktop}\MEEY"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopico
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "MEEY uygulamasını çalıştır"; Flags: nowait postinstall skipifsilent
+
+[Code]
+var
+	AboutPage: TWizardPage;
+	AboutTitleLabel: TNewStaticText;
+	AboutTextLabel: TNewStaticText;
+
+procedure InitializeWizard;
+begin
+	AboutPage := CreateCustomPage(
+		wpWelcome,
+		'Hakkında',
+		'MEEY uygulaması hakkında kısa bilgi');
+
+	AboutTitleLabel := TNewStaticText.Create(AboutPage);
+	AboutTitleLabel.Parent := AboutPage.Surface;
+	AboutTitleLabel.Left := ScaleX(0);
+	AboutTitleLabel.Top := ScaleY(0);
+	AboutTitleLabel.Width := AboutPage.SurfaceWidth;
+	AboutTitleLabel.Height := ScaleY(28);
+	AboutTitleLabel.Font.Style := [fsBold];
+	AboutTitleLabel.Caption := 'MEEY - Mesleki Eğitim Evrak Yöneticisi';
+
+	AboutTextLabel := TNewStaticText.Create(AboutPage);
+	AboutTextLabel.Parent := AboutPage.Surface;
+	AboutTextLabel.Left := ScaleX(0);
+	AboutTextLabel.Top := ScaleY(34);
+	AboutTextLabel.Width := AboutPage.SurfaceWidth;
+	AboutTextLabel.Height := ScaleY(210);
+	AboutTextLabel.AutoSize := False;
+	AboutTextLabel.WordWrap := True;
+	AboutTextLabel.Caption :=
+		'Sürüm: {#MyAppVersion}' + #13#10#13#10 +
+		'MEEY, mesleki eğitim süreçlerindeki evrak yönetimini kolaylaştırmak için geliştirilmiş bir masaüstü uygulamasıdır.' + #13#10#13#10 +
+		'Geliştirici: {#MyAppPublisher}' + #13#10 +
+		'Proje Sayfası: {#MyAppURL}' + #13#10#13#10 +
+		'Kurulum sırasında varsayılan ayarlar güvenle kullanılabilir. Kurulum tamamlandıktan sonra uygulamayı hemen başlatabilirsiniz.';
+end;
