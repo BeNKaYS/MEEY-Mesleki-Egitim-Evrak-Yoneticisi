@@ -34,6 +34,72 @@ namespace MEEY.Database
             }
         }
 
+        private static string GetLegacyDatabaseFilePath()
+        {
+            return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MEEY.db");
+        }
+
+        private static int GetDatabaseDataScore(string filePath)
+        {
+            if (!File.Exists(filePath))
+                return 0;
+
+            int score = 0;
+            string[] tableNames =
+            {
+                "OkulKoordinatorler",
+                "Isletmeler",
+                "AlanDal",
+                "KoordinatorTanimlama",
+                "Ogrenciler",
+                "CalismaTakvimi",
+                "Devamsizlik"
+            };
+
+            using (var connection = new SQLiteConnection($"Data Source={filePath};Version=3;Read Only=True;"))
+            {
+                connection.Open();
+
+                foreach (string tableName in tableNames)
+                {
+                    using (var command = new SQLiteCommand($"SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name='{tableName}'", connection))
+                    {
+                        long exists = Convert.ToInt64(command.ExecuteScalar());
+                        if (exists == 0)
+                            continue;
+                    }
+
+                    using (var command = new SQLiteCommand($"SELECT COUNT(*) FROM {tableName}", connection))
+                    {
+                        score += Convert.ToInt32(command.ExecuteScalar());
+                    }
+                }
+            }
+
+            return score;
+        }
+
+        private static void TryMigrateLegacyDatabase()
+        {
+            string legacyDbPath = GetLegacyDatabaseFilePath();
+            if (!File.Exists(legacyDbPath))
+                return;
+
+            if (!File.Exists(dbPath))
+            {
+                File.Copy(legacyDbPath, dbPath, true);
+                return;
+            }
+
+            int currentScore = GetDatabaseDataScore(dbPath);
+            int legacyScore = GetDatabaseDataScore(legacyDbPath);
+
+            if (legacyScore > currentScore)
+            {
+                File.Copy(legacyDbPath, dbPath, true);
+            }
+        }
+
         public static string NormalizeText(string? value)
         {
             if (string.IsNullOrWhiteSpace(value))
@@ -44,6 +110,14 @@ namespace MEEY.Database
 
         public static void InitializeDatabase()
         {
+            try
+            {
+                TryMigrateLegacyDatabase();
+            }
+            catch
+            {
+            }
+
             // Debug: Yolu dosyaya yaz
             try
             {
