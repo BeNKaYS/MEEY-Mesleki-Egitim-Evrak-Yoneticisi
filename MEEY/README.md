@@ -2,6 +2,13 @@
 
 MEEY (Mesleki Eğitim Evrak Yöneticisi), mesleki eğitimdeki evrak süreçlerini (işletme belirleme, öğrenci atama, görev takip raporları, sözleşmeler vb.) kolaylaştırmak ve okulların/koordinatörlerin iş yükünü azaltmak amacıyla geliştirilmiş modern, modüler bir WPF uygulamasıdır.
 
+## Son Güncellemeler (v1.0.8)
+
+- **Aylık Rehberlik Raporu**: Tatil günleri ziyaret tarihleri içinde `dd.MM.yyyy (T)` formatında işaretlenir.
+- **HTML Kayıtları**: Raporlardan üretilen HTML dosyaları uygulama genelindeki ortak kayıt klasörüne alınarak görünürlük birleştirildi.
+- **Kurulu Sürüm Uyumluluğu**: Veritabanı/yazma yolu yaklaşımı `LocalAppData` tabanlı akışla daha stabil hale getirildi.
+- **Kurulum Paketi**: Güncel Windows kurulum dosyası `MEEY-Setup-v1.0.8-win-x64.exe` olarak üretildi.
+
 ## Mimarisi ve Özellikleri
 
 - **Modern ve Minimalist Arayüz**: Sol menü çubuğundan ilgili modüllere kolay erişim. Kullanıcı dostu yerleşim.

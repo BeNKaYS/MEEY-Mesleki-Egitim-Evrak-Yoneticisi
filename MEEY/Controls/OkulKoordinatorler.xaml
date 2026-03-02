@@ -31,55 +31,70 @@
                           Text="Okul Adı:" 
                           VerticalAlignment="Center"
                           Margin="0,8"/>
-                <TextBox x:Name="txtOkulAdi"
-                        Grid.Row="0" Grid.Column="1" 
-                        Height="32"
-                        Margin="0,8"
-                        Padding="8,5"/>
+                <ComboBox x:Name="txtOkulAdi"
+                     Grid.Row="0" Grid.Column="1"
+                     Height="32"
+                     Margin="0,8"
+                     Padding="8,5"
+                     IsEditable="True"
+                     IsTextSearchEnabled="False"
+                     StaysOpenOnEdit="True"/>
                 
                 <!-- İl -->
                 <TextBlock Grid.Row="1" Grid.Column="0" 
                           Text="İl:" 
                           VerticalAlignment="Center"
                           Margin="0,8"/>
-                <TextBox x:Name="txtIl"
-                        Grid.Row="1" Grid.Column="1" 
-                        Height="32"
-                        Margin="0,8"
-                        Padding="8,5"/>
+                <ComboBox x:Name="txtIl"
+                     Grid.Row="1" Grid.Column="1"
+                     Height="32"
+                     Margin="0,8"
+                     Padding="8,5"
+                     IsEditable="True"
+                     IsTextSearchEnabled="False"
+                     StaysOpenOnEdit="True"/>
                 
                 <!-- Okul Müdürü -->
                 <TextBlock Grid.Row="2" Grid.Column="0" 
                           Text="Okul Müdürü:" 
                           VerticalAlignment="Center"
                           Margin="0,8"/>
-                <TextBox x:Name="txtOkulMuduru"
-                        Grid.Row="2" Grid.Column="1" 
-                        Height="32"
-                        Margin="0,8"
-                        Padding="8,5"/>
+                <ComboBox x:Name="txtOkulMuduru"
+                     Grid.Row="2" Grid.Column="1"
+                     Height="32"
+                     Margin="0,8"
+                     Padding="8,5"
+                     IsEditable="True"
+                     IsTextSearchEnabled="False"
+                     StaysOpenOnEdit="True"/>
                 
                 <!-- Koord. Müdür Yrd. -->
                 <TextBlock Grid.Row="3" Grid.Column="0" 
                           Text="Koord. Müdür Yrd.:" 
                           VerticalAlignment="Center"
                           Margin="0,8"/>
-                <TextBox x:Name="txtKoordMudurYrd"
-                        Grid.Row="3" Grid.Column="1" 
-                        Height="32"
-                        Margin="0,8"
-                        Padding="8,5"/>
+                <ComboBox x:Name="txtKoordMudurYrd"
+                     Grid.Row="3" Grid.Column="1"
+                     Height="32"
+                     Margin="0,8"
+                     Padding="8,5"
+                     IsEditable="True"
+                     IsTextSearchEnabled="False"
+                     StaysOpenOnEdit="True"/>
                 
                 <!-- Koord. Öğretmen -->
                 <TextBlock Grid.Row="4" Grid.Column="0" 
                           Text="Koord. Öğretmen:" 
                           VerticalAlignment="Center"
                           Margin="0,8"/>
-                <TextBox x:Name="txtKoordOgretmen"
-                        Grid.Row="4" Grid.Column="1" 
-                        Height="32"
-                        Margin="0,8"
-                        Padding="8,5"/>
+                <ComboBox x:Name="txtKoordOgretmen"
+                     Grid.Row="4" Grid.Column="1"
+                     Height="32"
+                     Margin="0,8"
+                     Padding="8,5"
+                     IsEditable="True"
+                     IsTextSearchEnabled="False"
+                     StaysOpenOnEdit="True"/>
                 
                 <!-- Butonlar -->
                 <StackPanel Grid.Row="5" Grid.Column="1" 

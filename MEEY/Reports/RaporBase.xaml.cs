@@ -12,6 +12,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Microsoft.Web.WebView2.Core;
+using MEEY.Controls;
 using MEEY.Database;
 
 namespace MEEY.Reports
@@ -1242,9 +1243,7 @@ namespace MEEY.Reports
                         };
                         
                         // Target Path
-                        var targetDir = Path.Combine(AppContext.BaseDirectory, "Assets", "EditorKayitlari");
-                        if (!Directory.Exists(targetDir))
-                            Directory.CreateDirectory(targetDir);
+                        var targetDir = MetinEditorHost.GetEditorRecordsPath();
                             
                         var htmlFileName = $"{filePrefix}_{DateTime.Now:yyyyMMdd_HHmmss}.html";
                         var finalHtmlPath = Path.Combine(targetDir, htmlFileName);
@@ -1699,6 +1698,92 @@ namespace MEEY.Reports
             return null;
         }
 
+        private static DateTime? ParseDateFlexible(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                return null;
+
+            var formats = new[]
+            {
+                "dd.MM.yyyy",
+                "d.M.yyyy",
+                "dd/MM/yyyy",
+                "d/M/yyyy",
+                "yyyy-MM-dd",
+                "yyyy/MM/dd",
+                "dd-MM-yyyy",
+                "d-M-yyyy"
+            };
+
+            if (DateTime.TryParseExact(value.Trim(), formats, System.Globalization.CultureInfo.GetCultureInfo("tr-TR"), System.Globalization.DateTimeStyles.None, out var dt))
+                return dt.Date;
+
+            if (DateTime.TryParse(value.Trim(), out dt))
+                return dt.Date;
+
+            return null;
+        }
+
+        private static HashSet<DateTime> GetHolidayDates(SQLiteConnection connection, DateTime baslangic, DateTime bitis)
+        {
+            var holidays = new HashSet<DateTime>();
+            const string query = @"
+                SELECT Baslangic, Bitis, Aciklama
+                FROM CalismaTakvimi";
+
+            bool IsHolidayDescription(string? description)
+            {
+                if (string.IsNullOrWhiteSpace(description))
+                    return false;
+
+                var text = description.Trim();
+                var keywords = new[]
+                {
+                    "tatil",
+                    "bayram",
+                    "yılbaşı",
+                    "yilbasi",
+                    "resmi",
+                    "yarıyıl",
+                    "yariyil"
+                };
+
+                return keywords.Any(k => text.IndexOf(k, StringComparison.CurrentCultureIgnoreCase) >= 0);
+            }
+
+            using var cmd = new SQLiteCommand(query, connection);
+            using var reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                var aciklama = reader["Aciklama"]?.ToString();
+                if (!IsHolidayDescription(aciklama))
+                    continue;
+
+                var baslangicText = reader["Baslangic"]?.ToString() ?? string.Empty;
+                var bitisText = reader["Bitis"]?.ToString() ?? string.Empty;
+
+                var bas = ParseDateFlexible(baslangicText);
+                var bit = ParseDateFlexible(bitisText);
+                if (!bas.HasValue)
+                    continue;
+
+                var start = bas.Value.Date;
+                var end = (bit ?? bas).Value.Date;
+                if (end < start)
+                    (start, end) = (end, start);
+
+                if (end < baslangic.Date || start > bitis.Date)
+                    continue;
+
+                var rangeStart = start < baslangic.Date ? baslangic.Date : start;
+                var rangeEnd = end > bitis.Date ? bitis.Date : end;
+                for (var d = rangeStart; d <= rangeEnd; d = d.AddDays(1))
+                    holidays.Add(d.Date);
+            }
+
+            return holidays;
+        }
+
         private byte[] OlusturAylikRehberlikPdf(List<DataItem> isletmeler, DateTime baslangic, DateTime bitis, bool isHtml = false)
         {
             var girdiler = new List<AylikRehberlikGirdisi>();
@@ -1709,6 +1794,7 @@ namespace MEEY.Reports
             using (var connection = DatabaseManager.GetConnection())
             {
                 connection.Open();
+                var tatilTarihleri = GetHolidayDates(connection, baslangic, bitis);
 
                 foreach (var isletme in isletmeler)
                 {
@@ -1750,6 +1836,12 @@ namespace MEEY.Reports
                                     .Range(0, (bitis.Date - baslangic.Date).Days + 1)
                                     .Select(offset => baslangic.Date.AddDays(offset))
                                     .Where(tarih => tarih.DayOfWeek == schoolDay.Value)
+                                    .ToList();
+
+                                var ziyaretTarihiEtiketleri = ziyaretTarihleri
+                                    .Select(tarih => tatilTarihleri.Contains(tarih.Date)
+                                        ? $"{tarih:dd.MM.yyyy} (T)"
+                                        : $"{tarih:dd.MM.yyyy}")
                                     .ToList();
 
                                 if (ziyaretTarihleri.Count == 0)
@@ -1809,6 +1901,7 @@ namespace MEEY.Reports
                                     AlanDal: alanDalSet.Count == 0 ? "-" : string.Join(", ", alanDalSet),
                                     GorevliGun: TrGun(schoolDay.Value),
                                     ZiyaretTarihleri: ziyaretTarihleri,
+                                    ZiyaretTarihiEtiketleri: ziyaretTarihiEtiketleri,
                                     Ogrenciler: ogrenciler,
                                     KoordinatorOgretmen: ogretmen,
                                     KoordinatorMudurYrd: mudurYrd,

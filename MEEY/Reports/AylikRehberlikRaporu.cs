@@ -34,6 +34,7 @@ namespace MEEY.Reports
         IReadOnlyList<string> Ogrenciler,
         string GorevliGun,
         IReadOnlyList<DateTime> ZiyaretTarihleri,
+        IReadOnlyList<string>? ZiyaretTarihiEtiketleri,
         string AyText,
         bool AutoDoldur,
         bool? UstaBelgesiVar
@@ -99,6 +100,8 @@ namespace MEEY.Reports
         private static void TekForm(IContainer container, AylikRehberlikGirdisi it, bool compact = false)
         {
             var tarihler = it.ZiyaretTarihleri?.Distinct().OrderBy(x => x).ToList() ?? new List<DateTime>();
+            var tarihEtiketleri = (it.ZiyaretTarihiEtiketleri?.Where(x => !string.IsNullOrWhiteSpace(x)).ToList())
+                                 ?? tarihler.Select(x => x.ToString("dd.MM.yyyy")).ToList();
 
             var pad = compact ? 6 : 10;
             var sp = compact ? 4 : 6;
@@ -161,8 +164,8 @@ namespace MEEY.Reports
                         }
                         else
                         {
-                            foreach (var d in tarihler.Take(6))
-                                b.Item().AlignCenter().Text(d.ToString("dd/MM/yyyy")).FontSize(bodySize);
+                            foreach (var tarihText in tarihEtiketleri.Take(6))
+                                b.Item().AlignCenter().Text(tarihText).FontSize(bodySize);
                         }
                     });
                 });

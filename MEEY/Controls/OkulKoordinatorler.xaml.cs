@@ -1,6 +1,7 @@
 using System;
 using System.Data;
 using System.Data.SQLite;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -32,6 +33,7 @@ namespace MEEY.Controls
                         DataTable dt = new DataTable();
                         adapter.Fill(dt);
                         dgOkullar.ItemsSource = dt.DefaultView;
+                        PopulateDropdowns(dt);
                     }
                 }
             }
@@ -228,14 +230,73 @@ namespace MEEY.Controls
             }
         }
 
+        private void PopulateDropdowns(DataTable dt)
+        {
+            PopulateDropdown(txtOkulAdi, dt, "OkulAdi");
+            PopulateDropdown(txtIl, dt, "Il");
+            PopulateDropdown(txtOkulMuduru, dt, "OkulMuduru");
+            PopulateDropdown(txtKoordMudurYrd, dt, "KoordMudurYrd");
+            PopulateDropdown(txtKoordOgretmen, dt, "KoordOgretmen");
+        }
+
+        private void PopulateDropdown(ComboBox comboBox, DataTable dt, string columnName)
+        {
+            string currentText = comboBox.Text;
+
+            var values = dt.AsEnumerable()
+                .Select(r => r[columnName]?.ToString()?.Trim())
+                .Where(v => !string.IsNullOrWhiteSpace(v))
+                .Distinct(StringComparer.CurrentCultureIgnoreCase)
+                .OrderBy(v => v)
+                .ToList();
+
+            comboBox.ItemsSource = values;
+
+            if (selectedId.HasValue)
+                return;
+
+            if (values.Count == 1)
+            {
+                comboBox.SelectedItem = values[0];
+            }
+            else
+            {
+                comboBox.SelectedIndex = -1;
+                comboBox.Text = string.Empty;
+
+                if (!string.IsNullOrWhiteSpace(currentText) && values.Any(v => string.Equals(v, currentText, StringComparison.CurrentCultureIgnoreCase)))
+                {
+                    comboBox.Text = currentText;
+                }
+            }
+        }
+
+        private void ApplyDefaultSelections()
+        {
+            ApplyDefaultSelection(txtOkulAdi);
+            ApplyDefaultSelection(txtIl);
+            ApplyDefaultSelection(txtOkulMuduru);
+            ApplyDefaultSelection(txtKoordMudurYrd);
+            ApplyDefaultSelection(txtKoordOgretmen);
+        }
+
+        private void ApplyDefaultSelection(ComboBox comboBox)
+        {
+            if (comboBox.Items.Count == 1)
+            {
+                comboBox.SelectedIndex = 0;
+            }
+            else
+            {
+                comboBox.SelectedIndex = -1;
+                comboBox.Text = string.Empty;
+            }
+        }
+
         private void ClearForm()
         {
             selectedId = null;
-            txtOkulAdi.Clear();
-            txtIl.Clear();
-            txtOkulMuduru.Clear();
-            txtKoordMudurYrd.Clear();
-            txtKoordOgretmen.Clear();
+            ApplyDefaultSelections();
             dgOkullar.SelectedItem = null;
         }
     }
