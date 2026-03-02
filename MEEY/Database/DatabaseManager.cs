@@ -8,6 +8,7 @@ namespace MEEY.Database
     public class DatabaseManager
     {
         private static readonly CultureInfo TrCulture = new CultureInfo("tr-TR");
+        private static readonly string appDataRootDirectory;
         private static readonly string dbDirectory;
         private static readonly string dbPath;
         private static readonly string connectionString;
@@ -15,7 +16,8 @@ namespace MEEY.Database
         static DatabaseManager()
         {
             string localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            dbDirectory = Path.Combine(localAppData, "MEEY");
+            appDataRootDirectory = Path.Combine(localAppData, "MEEY");
+            dbDirectory = Path.Combine(appDataRootDirectory, "db");
             Directory.CreateDirectory(dbDirectory);
 
             dbPath = Path.Combine(dbDirectory, "MEEY.db");
@@ -37,6 +39,11 @@ namespace MEEY.Database
         private static string GetLegacyDatabaseFilePath()
         {
             return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MEEY.db");
+        }
+
+        private static string GetPreviousAppDataDatabaseFilePath()
+        {
+            return Path.Combine(appDataRootDirectory, "MEEY.db");
         }
 
         private static int GetDatabaseDataScore(string filePath)
@@ -81,22 +88,41 @@ namespace MEEY.Database
 
         private static void TryMigrateLegacyDatabase()
         {
-            string legacyDbPath = GetLegacyDatabaseFilePath();
-            if (!File.Exists(legacyDbPath))
+            string[] migrationCandidates =
+            {
+                GetLegacyDatabaseFilePath(),
+                GetPreviousAppDataDatabaseFilePath()
+            };
+
+            string? bestSourceFile = null;
+            int bestSourceScore = -1;
+
+            foreach (string candidate in migrationCandidates)
+            {
+                if (!File.Exists(candidate))
+                    continue;
+
+                int candidateScore = GetDatabaseDataScore(candidate);
+                if (candidateScore > bestSourceScore)
+                {
+                    bestSourceScore = candidateScore;
+                    bestSourceFile = candidate;
+                }
+            }
+
+            if (string.IsNullOrWhiteSpace(bestSourceFile))
                 return;
 
             if (!File.Exists(dbPath))
             {
-                File.Copy(legacyDbPath, dbPath, true);
+                File.Copy(bestSourceFile, dbPath, true);
                 return;
             }
 
             int currentScore = GetDatabaseDataScore(dbPath);
-            int legacyScore = GetDatabaseDataScore(legacyDbPath);
-
-            if (legacyScore > currentScore)
+            if (bestSourceScore > currentScore)
             {
-                File.Copy(legacyDbPath, dbPath, true);
+                File.Copy(bestSourceFile, dbPath, true);
             }
         }
 
